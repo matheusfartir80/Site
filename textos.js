@@ -88,15 +88,15 @@ SITE.SERVICO_4_DESCRICAO = "Preenchimento e realce de falhas para um visual mais
    DICA: a foto principal precisa ser PNG SEM FUNDO (use remove.bg)
    --------------------------------------------------------------------- */
 
-SITE.FOTO_PRINCIPAL = "fotos/barbeiro.png";
+SITE.FOTO_PRINCIPAL = "barbeiro.png";
 
-SITE.FOTO_CORTE_1 = "fotos/corte-1.jpg";
+SITE.FOTO_CORTE_1 = "corte-1.jpg";
 SITE.FOTO_CORTE_1_NOME = "Pompadour com degradê";
 
-SITE.FOTO_CORTE_2 = "fotos/corte-2.jpg";
+SITE.FOTO_CORTE_2 = "corte-2.jpg";
 SITE.FOTO_CORTE_2_NOME = "Risca na navalha";
 
-SITE.FOTO_CORTE_3 = "fotos/corte-3.jpg";
+SITE.FOTO_CORTE_3 = "corte-3.jpg";
 SITE.FOTO_CORTE_3_NOME = "Degradê com barba";
 
 

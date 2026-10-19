@@ -646,15 +646,27 @@ footer{position:relative;overflow:hidden;padding:0 var(--pad) 28px}
   brushEl.setAttribute('aria-label', brushLines.join(' '));
 
   /* fotos */
+  function fixImg(el) {
+    el.addEventListener('error', function once() {
+      el.removeEventListener('error', once);
+      if (el.src.indexOf('/fotos/') > -1) el.src = el.src.replace('/fotos/', '/');
+      else if (el.src.indexOf('fotos/') > -1) el.src = el.src.replace('fotos/', '');
+    });
+  }
   var fp = val('FOTO_PRINCIPAL', 'fotos/barbeiro.png');
-  $('#foto-principal').src = fp + (fp.indexOf('?') === -1 ? '?v=2' : '');
+  var mainImg = $('#foto-principal');
+  fixImg(mainImg);
+  mainImg.src = fp + (fp.indexOf('?') === -1 ? '?v=2' : '');
   var cortes = [1, 2, 3].map(function (i) {
     return { src: val('FOTO_CORTE_' + i, 'fotos/corte-' + i + '.jpg'), nome: val('FOTO_CORTE_' + i + '_NOME', 'Corte ' + i) };
   });
   var thumbs = $('#thumbs');
   cortes.forEach(function (c) {
     var d = document.createElement('div');
-    d.innerHTML = '<img src="' + esc(c.src) + '" alt="' + esc(c.nome) + '" loading="eager">';
+    var im = document.createElement('img');
+    im.alt = c.nome; im.loading = 'eager';
+    fixImg(im); im.src = c.src;
+    d.appendChild(im);
     thumbs.insertBefore(d, thumbs.querySelector('.x'));
   });
 
@@ -680,7 +692,7 @@ footer{position:relative;overflow:hidden;padding:0 var(--pad) 28px}
   $('#gal-title').innerHTML = esc(ft[0]) + (ft[1] ? '<span class="br">' + esc(ft[1]) + '</span>' : '');
   $('#gal').innerHTML = cortes.map(function (c, i) {
     return '<div class="card"><figure>' +
-      '<img src="' + esc(c.src) + '" alt="' + esc(c.nome) + '" loading="lazy">' +
+      '<img src="' + esc(c.src) + '" alt="' + esc(c.nome) + '" loading="lazy" onerror="if(this.src.indexOf(\'fotos/\')>-1){this.onerror=null;this.src=this.src.replace(\'fotos/\',\'\')}">' +
       '<i class="corner c1"></i><i class="corner c2"></i></figure>' +
       '<figcaption><b>Nº ' + String(i + 1).padStart(3, '0') + '</b><span>' + esc(c.nome) + '</span></figcaption></div>';
   }).join('');
