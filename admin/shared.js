@@ -133,7 +133,8 @@ function activateTicket(slug) {
 }
 
 function validateFriendCut(slug, friendName, pin) {
-  if (pin !== FARTIR_CONFIG.ADMIN_PIN) throw new Error('Senha incorreta!');
+  const p = String(pin || '').trim().toLowerCase();
+  if (p !== FARTIR_CONFIG.ADMIN_PIN.toLowerCase()) throw new Error('Senha incorreta!');
   const db = getFartirDB();
   const t = db.tickets.find(x => x.slug === slug);
   if (!t) throw new Error('Convite não encontrado!');
@@ -146,7 +147,8 @@ function validateFriendCut(slug, friendName, pin) {
 }
 
 function validateInviterCut(slug, pin) {
-  if (pin !== FARTIR_CONFIG.ADMIN_PIN) throw new Error('Senha incorreta!');
+  const p = String(pin || '').trim().toLowerCase();
+  if (p !== FARTIR_CONFIG.ADMIN_PIN.toLowerCase()) throw new Error('Senha incorreta!');
   const db = getFartirDB();
   const t = db.tickets.find(x => x.slug === slug);
   if (!t) throw new Error('Convite não encontrado!');

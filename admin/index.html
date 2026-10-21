@@ -402,8 +402,8 @@ function checkAuth() {
 }
 
 document.getElementById('loginSubmitBtn').onclick = () => {
-  const pin = document.getElementById('loginPinInput').value;
-  if (pin === FARTIR_CONFIG.ADMIN_PIN) {
+  const pin = (document.getElementById('loginPinInput').value || '').trim().toLowerCase();
+  if (pin === FARTIR_CONFIG.ADMIN_PIN.toLowerCase()) {
     sessionStorage.setItem(SESSION_AUTH_KEY, 'true');
     checkAuth();
     renderTickets();
