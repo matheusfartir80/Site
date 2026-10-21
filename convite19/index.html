@@ -106,9 +106,9 @@
       margin-bottom: 8px;
     }
     h1.hero-name {
-      font-size: clamp(36px, 9vw, 68px);
+      font-size: clamp(34px, 8.5vw, 64px);
       font-weight: 900;
-      line-height: 0.95;
+      line-height: 1;
       letter-spacing: -0.03em;
       text-transform: uppercase;
       color: var(--ink);
@@ -692,7 +692,6 @@ async function renderPage() {
   const finished = friendUsed && inviterUsed;
 
   document.getElementById('ticketBadge').textContent = `CONVITE #${String(t.number).padStart(2, '0')}`;
-  document.getElementById('inviterNameDisplay').textContent = t.inviterName.toUpperCase();
 
   // Contador Setup
   const clockDigits = document.getElementById('clockDigits');
@@ -730,10 +729,11 @@ async function renderPage() {
     document.getElementById('cardInviter').style.display = 'none';
     document.getElementById('cardFriend').style.display = 'block';
 
-    document.getElementById('heroKicker').textContent = 'INDICAÇÃO ESPECIAL';
-    document.getElementById('heroTagline').textContent = `INDICADO POR ${t.inviterName.toUpperCase()}`;
+    document.getElementById('heroKicker').textContent = 'INDICAÇÃO EXCLUSIVA';
+    document.getElementById('inviterNameDisplay').textContent = `INDICADO POR ${t.inviterName.toUpperCase()}`;
+    document.getElementById('heroTagline').textContent = 'VOCÊ GANHOU 50% DE DESCONTO';
     document.getElementById('heroBrush').textContent = 'Seu corte por R$ 20';
-    document.getElementById('heroDesc').textContent = `${t.inviterName} te enviou este convite exclusivo para você cortar o cabelo na Fartir pela metade do preço!`;
+    document.getElementById('heroDesc').textContent = `${t.inviterName} te enviou este convite exclusivo para você cortar o cabelo com Matheus pela metade do preço!`;
 
     clockBox.style.display = 'flex';
     updateClockOnly();
@@ -744,6 +744,7 @@ async function renderPage() {
     document.getElementById('cardFriend').style.display = 'none';
 
     document.getElementById('heroKicker').textContent = 'CONVITE EXCLUSIVO';
+    document.getElementById('inviterNameDisplay').textContent = t.inviterName.toUpperCase();
     document.getElementById('heroTagline').textContent = 'VOCÊ GANHOU 50% DE DESCONTO';
     document.getElementById('heroBrush').textContent = 'Indicou. Ganhou.';
     document.getElementById('heroDesc').textContent = 'Dois cortes pela metade do preço. Compartilhe seu convite com um amigo: o primeiro a cortar paga R$ 20 e libera R$ 20 para você também!';
@@ -853,9 +854,9 @@ function renderInviter(t, expired, friendUsed, inviterUsed, cleanUrl, finished) 
     </div>
   `;
 
-  // Mensagem do WhatsApp com #amigo
+  // Mensagem exata pedida com "você"
   const friendLink = `${cleanUrl}#amigo`;
-  const shareText = `Fala! Consegui um convite exclusivo para cortar cabelo com 50% de desconto (de R$ 40 por R$ 20).\n\nAcesse aqui para garantir a vaga: ${friendLink}`;
+  const shareText = `Fala! Consegui um convite exclusivo para você cortar cabelo com 50% de desconto (de R$ 40 por R$ 20).\n\nAcesse aqui para garantir a vaga: ${friendLink}`;
 
   document.getElementById('shareWaBtn').onclick = () => {
     openWhatsApp('', shareText);
@@ -879,7 +880,7 @@ function renderFriend(t, expired, friendUsed, cleanUrl, finished) {
     content.innerHTML = `
       <div class="notice success">
         🎉 <strong>Este convite já foi 100% concluído!</strong><br>
-        Tanto você quanto ${t.inviterName} já realizaram o corte com 50% de desconto na Fartir.
+        Tanto você quanto ${t.inviterName} já realizaram o corte com 50% de desconto com Matheus.
       </div>
     `;
     return;
@@ -907,9 +908,9 @@ function renderFriend(t, expired, friendUsed, cleanUrl, finished) {
 
   badge.className = 'status-badge ok';
   badge.textContent = '1 VAGA DISPONÍVEL';
-  title.textContent = `${t.inviterName} indicou você!`;
+  title.textContent = `Convite de ${t.inviterName}!`;
   content.innerHTML = `
-    <p>Você recebeu a chance de cortar seu cabelo no Laboratório de Cortes FARTIR por <strong>apenas R$ 20</strong> (metade do preço!).</p>
+    <p>Você recebeu a chance de cortar seu cabelo com Matheus no Laboratório de Cortes FARTIR por <strong>apenas R$ 20</strong> (metade do preço!).</p>
     <div class="notice info">
       ⚡ <strong>Atenção:</strong> Cada convite possui apenas <strong>1 vaga</strong> para amigo. O desconto fica garantido para o primeiro que agendar e comparecer!
     </div>
