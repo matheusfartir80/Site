@@ -1,0 +1,962 @@
+﻿<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>FARTIR PASS · Indique & Ganhe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,300..900&family=JetBrains+Mono:wght@400;600;700;800&family=Permanent+Marker&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090909;
+      --card: #121211;
+      --card-border: rgba(238, 230, 215, 0.12);
+      --ink: #eee6d7;
+      --muted: #8e887e;
+      --soft: #c5bdae;
+      --red: #d3141d;
+      --red-bright: #ff333d;
+      --green: #8fd183;
+      --amber: #e5ad67;
+      --font-main: 'Archivo', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-brush: 'Permanent Marker', cursive;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background-color: var(--bg);
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(211, 20, 29, 0.18), transparent 45%),
+        radial-gradient(circle at 80% 60%, rgba(255, 255, 255, 0.02), transparent 40%);
+      color: var(--ink);
+      font-family: var(--font-main);
+      min-height: 100vh;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    button:disabled { cursor: not-allowed; opacity: 0.45; }
+
+    .wrap {
+      width: min(100%, 740px);
+      margin: 0 auto;
+      padding: 24px 18px 80px;
+    }
+
+    /* Header */
+    header.site-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .brand-group .logo {
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+    }
+    .brand-group .logo em { color: var(--red); font-style: normal; }
+    .brand-group .tagline {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-top: 3px;
+    }
+    .pill-ticket {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(211, 20, 29, 0.12);
+      border: 1px solid var(--red);
+      color: var(--ink);
+      padding: 6px 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 34px 0 20px;
+    }
+    .badge-target {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--soft);
+      margin-bottom: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      padding: 4px 10px;
+    }
+    .badge-target strong { color: var(--red-bright); }
+    h1.hero-title {
+      font-size: clamp(34px, 7.5vw, 60px);
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .hero-brush {
+      font-family: var(--font-brush);
+      font-size: clamp(24px, 5.5vw, 42px);
+      color: var(--red-bright);
+      transform: rotate(-2.5deg);
+      display: inline-block;
+      margin: 6px 0 16px;
+      text-shadow: 0 4px 20px rgba(211, 20, 29, 0.4);
+    }
+    p.hero-desc {
+      color: var(--muted);
+      font-size: 14px;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Contador */
+    .countdown-box {
+      border: 1px solid rgba(211, 20, 29, 0.4);
+      background: linear-gradient(135deg, rgba(211, 20, 29, 0.14), rgba(18, 18, 17, 0.95) 70%);
+      padding: 20px 22px;
+      margin: 22px 0 26px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      position: relative;
+    }
+    .countdown-box.finished {
+      border-color: rgba(143, 209, 131, 0.4);
+      background: linear-gradient(135deg, rgba(143, 209, 131, 0.15), rgba(18, 18, 17, 0.95) 70%);
+    }
+    .countdown-icon {
+      font-size: 32px;
+      line-height: 1;
+    }
+    .countdown-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--soft);
+      margin-bottom: 4px;
+    }
+    .countdown-digits {
+      font-family: var(--font-mono);
+      font-size: clamp(20px, 4.8vw, 32px);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      color: var(--red-bright);
+      line-height: 1.1;
+    }
+    .countdown-box.finished .countdown-digits { color: var(--green); }
+    .countdown-footer {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* Pricing */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 520px) {
+      .pricing-grid { grid-template-columns: 1fr; }
+    }
+    .price-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      padding: 18px 20px;
+      position: relative;
+    }
+    .price-card.featured {
+      border-color: var(--red);
+      background: linear-gradient(180deg, rgba(211, 20, 29, 0.12), var(--card) 60%);
+    }
+    .price-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .price-card.featured .price-label { color: var(--red-bright); }
+    .price-num {
+      font-size: 36px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+    .price-num s { color: var(--muted); font-size: 28px; }
+    .price-num span { font-size: 20px; vertical-align: super; }
+    .price-sub {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+      font-family: var(--font-mono);
+    }
+
+    /* Card Principal */
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      padding: 24px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      gap: 8px;
+    }
+    .card-kicker {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .status-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border: 1px solid transparent;
+    }
+    .status-badge.ok {
+      background: rgba(143, 209, 131, 0.14);
+      color: var(--green);
+      border-color: rgba(143, 209, 131, 0.3);
+    }
+    .status-badge.wait {
+      background: rgba(229, 173, 103, 0.14);
+      color: var(--amber);
+      border-color: rgba(229, 173, 103, 0.3);
+    }
+    .status-badge.red {
+      background: rgba(211, 20, 29, 0.14);
+      color: var(--red-bright);
+      border-color: rgba(211, 20, 29, 0.3);
+    }
+
+    .card h2 {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .card p {
+      color: var(--soft);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    /* Botões */
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      min-height: 52px;
+      padding: 12px 20px;
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid var(--red);
+      background: var(--red);
+      color: #fff;
+      transition: all 0.18s ease;
+      cursor: pointer;
+    }
+    .btn:hover:not(:disabled) {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #000;
+    }
+    .btn.whatsapp {
+      background: #25D366;
+      border-color: #25D366;
+      color: #000;
+    }
+    .btn.whatsapp:hover:not(:disabled) {
+      background: #1eb956;
+      border-color: #1eb956;
+      color: #000;
+    }
+    .btn.secondary {
+      background: transparent;
+      border: 1px solid var(--card-border);
+      color: var(--soft);
+    }
+    .btn.secondary:hover {
+      border-color: var(--ink);
+      color: var(--ink);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    /* Gavetas Recolhidas (Para não poluir a tela) */
+    .drawer-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--soft);
+      transition: all 0.2s ease;
+    }
+    .drawer-trigger:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: var(--soft);
+      color: var(--ink);
+    }
+    .drawer-content {
+      display: none;
+      margin-bottom: 20px;
+    }
+    .drawer-content.open {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Área do Barbeiro */
+    .owner-section {
+      border: 1px dashed rgba(238, 230, 215, 0.2);
+      background: #0e0e0d;
+      padding: 20px;
+      margin-top: 16px;
+    }
+    .owner-badge {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .field-group { margin-bottom: 12px; text-align: left; }
+    label.field-label {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--soft);
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    input.field-input {
+      width: 100%;
+      height: 44px;
+      background: #000;
+      border: 1px solid var(--card-border);
+      color: var(--ink);
+      padding: 8px 12px;
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: border 0.15s ease;
+    }
+    input.field-input:focus { border-color: var(--red-bright); }
+
+    .notice {
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.5;
+      margin: 12px 0;
+      border-left: 3px solid;
+    }
+    .notice.info {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: var(--card-border);
+      color: var(--soft);
+    }
+    .notice.success {
+      background: rgba(143, 209, 131, 0.08);
+      border-color: var(--green);
+      color: var(--green);
+    }
+    .notice.warning {
+      background: rgba(211, 20, 29, 0.08);
+      border-color: var(--red);
+      color: var(--soft);
+    }
+
+    /* Rodapé */
+    footer.site-footer {
+      border-top: 1px solid var(--card-border);
+      padding-top: 24px;
+      margin-top: 36px;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 1000;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      background: #141413;
+      border: 1px solid var(--card-border);
+      padding: 24px;
+      width: min(100%, 460px);
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- CABEÇALHO -->
+  <header class="site-header">
+    <div class="brand-group">
+      <div class="logo">FARTIR<em>.</em> PASS</div>
+      <div class="tagline">LABORATÓRIO DE CORTES · CONTAGEM MG</div>
+    </div>
+    <div class="pill-ticket" id="ticketBadge">CONVITE</div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="badge-target">
+      CONVITE EXCLUSIVO EMITIDO PARA: <strong id="inviterNameDisplay">CLIENTE</strong>
+    </div>
+    <h1 class="hero-title">INDICOU. GANHOU.</h1>
+    <div class="hero-brush">Os dois saem ganhando!</div>
+    <p class="hero-desc">
+      Um convite exclusivo, dois cortes pela metade do preço. Compartilhe com um amigo: o primeiro a cortar paga R$ 20 e libera R$ 20 para você também.
+    </p>
+  </section>
+
+  <!-- CONTADOR (Rodando automaticamente desde a emissão) -->
+  <section class="countdown-box" id="countdownBox">
+    <div class="countdown-icon" id="clockIcon">⏱</div>
+    <div>
+      <div class="countdown-label" id="clockLabel">TEMPO RESTANTE</div>
+      <div class="countdown-digits" id="clockDigits">CARREGANDO...</div>
+      <div class="countdown-footer" id="clockFooter">Calculando prazo restante...</div>
+    </div>
+  </section>
+
+  <!-- PREÇOS -->
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-label">VALOR NORMAL</div>
+      <div class="price-num"><s>R$ 40</s></div>
+      <div class="price-sub">CORTE AVULSO</div>
+    </div>
+    <div class="price-card featured">
+      <div class="price-label">COM ESTE CONVITE</div>
+      <div class="price-num"><span>R$ </span>20</div>
+      <div class="price-sub">50% DE DESCONTO</div>
+    </div>
+  </div>
+
+  <!-- SEÇÃO PRINCIPAL: QUEM RECEBEU O CONVITE (TITULAR) -->
+  <article class="card" id="cardInviter">
+    <div class="card-head">
+      <span class="card-kicker">[ CONVITE EXCLUSIVO ]</span>
+      <span class="status-badge" id="inviterStatusBadge">ATIVO</span>
+    </div>
+    <h2 id="inviterTitle">Olá!</h2>
+    <div id="inviterContent"></div>
+  </article>
+
+  <!-- GATILHO DISCRETO: CASO SEJA O AMIGO ABRINDO O LINK -->
+  <div class="drawer-trigger" id="friendTriggerBtn">
+    <span>👉 Você é o amigo indicado? Toque aqui</span>
+    <span>▼</span>
+  </div>
+
+  <!-- SEÇÃO DO AMIGO (RECOLHIDA PARA NÃO CONFUNDIR) -->
+  <div class="drawer-content" id="friendDrawer">
+    <article class="card" id="cardFriend" style="margin-bottom:0;">
+      <div class="card-head">
+        <span class="card-kicker">[ AMIGO INDICADO ]</span>
+        <span class="status-badge" id="friendStatusBadge">1 VAGA DISPONÍVEL</span>
+      </div>
+      <h2 id="friendTitle">Você foi convidado!</h2>
+      <div id="friendContent"></div>
+    </article>
+  </div>
+
+  <!-- GATILHO DISCRETO NO RODAPÉ: ÁREA DO BARBEIRO -->
+  <div style="text-align:center; margin-top:24px;">
+    <button id="ownerTriggerBtn" style="font-family:var(--font-mono); font-size:11px; color:var(--muted); text-decoration:underline; cursor:pointer; background:none; border:none;">
+      🔒 Sou o Barbeiro · Validar Atendimento com Senha
+    </button>
+  </div>
+
+  <!-- SEÇÃO DO BARBEIRO (RECOLHIDA) -->
+  <div class="drawer-content" id="ownerDrawer">
+    <section class="owner-section">
+      <div class="owner-badge">ÁREA RESTRITA DO PROFISSIONAL</div>
+      <h3 style="font-size:16px; font-weight:800; text-transform:uppercase; margin-bottom:6px;">Validar Atendimento</h3>
+      <p style="font-size:13px; color:var(--muted); line-height:1.5; margin-bottom:14px;">Uso exclusivo do barbeiro no atendimento para consumir a vaga e desbloquear o benefício.</p>
+      <div id="ownerControls"></div>
+    </section>
+  </div>
+
+  <!-- RODAPÉ -->
+  <footer class="site-footer">
+    <strong>FARTIR PASS</strong> · LABORATÓRIO DE CORTES · CONTAGEM/MG<br>
+    Válido para 1 (um) amigo por convite. Sujeito à disponibilidade de horários.<br>
+    Link oficial: <span id="currentUrlDisplay" style="color:var(--soft)">fartir.com.br/convite1</span>
+  </footer>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-box">
+    <h2 id="modalTitle" style="font-size:20px; font-weight:900; margin-bottom:10px; text-transform:uppercase;">Título</h2>
+    <div id="modalBody" style="color:var(--soft); font-size:14px; line-height:1.6; margin-bottom:18px;">Mensagem</div>
+    <div id="modalButtons" class="btn-row"></div>
+  </div>
+</div>
+
+<script src="shared.js"></script>
+<script>
+'use strict';
+
+// Identifica o slug
+function getSlug() {
+  if (window.FIXED_SLUG) return window.FIXED_SLUG;
+  
+  const pathParts = window.location.pathname.split('/').filter(Boolean);
+  for (const part of pathParts) {
+    if (/^convite\d+$/i.test(part)) return part.toLowerCase();
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const qSlug = params.get('c') || params.get('convite');
+  if (qSlug) return qSlug.toLowerCase();
+
+  return 'convite1';
+}
+
+window.FIXED_SLUG = 'convite6';
+const currentSlug = 'convite6';
+let currentTicket = null;
+
+// Toggles das gavetas
+document.getElementById('friendTriggerBtn').onclick = () => {
+  document.getElementById('friendDrawer').classList.toggle('open');
+};
+document.getElementById('ownerTriggerBtn').onclick = () => {
+  document.getElementById('ownerDrawer').classList.toggle('open');
+};
+
+function showModal(title, textHtml, actions = []) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerHTML = textHtml;
+  const btnContainer = document.getElementById('modalButtons');
+  btnContainer.innerHTML = '';
+
+  actions.forEach(action => {
+    const b = document.createElement('button');
+    b.className = 'btn ' + (action.className || '');
+    b.textContent = action.label;
+    b.onclick = () => {
+      document.getElementById('modalOverlay').classList.remove('open');
+      if (action.onClick) action.onClick();
+    };
+    btnContainer.appendChild(b);
+  });
+
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function openWhatsApp(number, text) {
+  const url = `https://wa.me/${number || ''}?text=${encodeURIComponent(text)}`;
+  window.open(url, '_blank');
+}
+
+function updateClockOnly() {
+  if (!currentTicket) return;
+  const clockDigits = document.getElementById('clockDigits');
+  if (!clockDigits) return;
+
+  const finished = !!(currentTicket.friendAttendedAt && currentTicket.inviterAttendedAt);
+  if (finished) {
+    clockDigits.textContent = 'MISSÃO CUMPRIDA! ✓';
+    return;
+  }
+
+  if (isTicketExpired(currentTicket)) {
+    clockDigits.textContent = 'PRAZO ESGOTADO';
+    return;
+  }
+
+  const remainMs = Math.max(0, getTicketExpirationDate(currentTicket) - Date.now());
+  const days = Math.floor(remainMs / 86400000);
+  const hours = Math.floor((remainMs % 86400000) / 3600000);
+  const mins = Math.floor((remainMs % 3600000) / 60000);
+  const secs = Math.floor((remainMs % 60000) / 1000);
+  clockDigits.textContent = `${days}d ${String(hours).padStart(2,'0')}h ${String(mins).padStart(2,'0')}m ${String(secs).padStart(2,'0')}s`;
+}
+
+async function renderPage() {
+  // Limpa ?c= da barra de endereço para ficar bonito
+  if (window.location.search && window.location.search.includes('c=')) {
+    try {
+      window.history.replaceState(null, '', window.location.pathname);
+    } catch (e) {}
+  }
+
+  currentTicket = await getTicketBySlugCloud(currentSlug);
+
+  const cleanUrl = `https://fartir.com.br/${currentSlug}`;
+  document.getElementById('currentUrlDisplay').textContent = cleanUrl;
+
+  if (!currentTicket) {
+    document.getElementById('ticketBadge').textContent = 'CONVITE';
+    document.getElementById('inviterNameDisplay').textContent = 'FARTIR PASS';
+    document.getElementById('countdownBox').style.display = 'none';
+
+    document.getElementById('cardInviter').innerHTML = `
+      <div style="text-align:center; padding:24px 12px;">
+        <h2 style="font-size:22px; text-transform:uppercase; margin-bottom:8px;">Nenhum convite ativo encontrado</h2>
+        <p style="color:var(--muted); font-size:14px; line-height:1.6; margin-bottom:20px;">
+          Este link de convite ainda não foi emitido ou já teve seu ciclo encerrado. Entre em contato com a Fartir para agendamentos e promoções!
+        </p>
+        <a href="https://wa.me/${FARTIR_CONFIG.OWNER_PHONE}" target="_blank" class="btn whatsapp" style="display:inline-flex; width:auto;">FALAR COM O MATHEUS NO WHATSAPP ↗</a>
+      </div>
+    `;
+    document.getElementById('friendTriggerBtn').style.display = 'none';
+    document.getElementById('ownerTriggerBtn').style.display = 'none';
+    return;
+  }
+
+  const t = currentTicket;
+  const expired = isTicketExpired(t);
+  const friendUsed = !!t.friendAttendedAt;
+  const inviterUsed = !!t.inviterAttendedAt;
+  const finished = friendUsed && inviterUsed;
+
+  document.getElementById('ticketBadge').textContent = `CONVITE #${String(t.number).padStart(2, '0')}`;
+  document.getElementById('inviterNameDisplay').textContent = t.inviterName.toUpperCase();
+
+  // Contador
+  const clockDigits = document.getElementById('clockDigits');
+  const clockFooter = document.getElementById('clockFooter');
+  const clockBox = document.getElementById('countdownBox');
+  const clockIcon = document.getElementById('clockIcon');
+  const clockLabel = document.getElementById('clockLabel');
+
+  if (finished) {
+    clockBox.className = 'countdown-box finished';
+    if (clockIcon) clockIcon.textContent = '🎉';
+    if (clockLabel) clockLabel.textContent = 'CONVITE CONCLUÍDO';
+    clockDigits.textContent = 'MISSÃO CUMPRIDA! ✓';
+    clockFooter.textContent = `Tanto ${t.inviterName} quanto seu amigo já aproveitaram o corte na FARTIR com 50% de desconto.`;
+  } else if (expired) {
+    clockBox.className = 'countdown-box';
+    if (clockIcon) clockIcon.textContent = '⏱';
+    if (clockLabel) clockLabel.textContent = 'PRAZO ESGOTADO';
+    clockDigits.textContent = 'PRAZO ESGOTADO';
+    clockFooter.textContent = `Os 30 dias deste convite encerraram em ${formatFartirDate(getTicketExpirationDate(t))}.`;
+  } else {
+    clockBox.className = 'countdown-box';
+    if (clockIcon) clockIcon.textContent = '⏱';
+    if (clockLabel) clockLabel.textContent = 'TEMPO RESTANTE';
+    clockFooter.textContent = `Válido até ${formatFartirDate(getTicketExpirationDate(t))} (30 dias corridos).`;
+    updateClockOnly();
+  }
+
+  // 1. Seção do Titular
+  renderInviter(t, expired, friendUsed, inviterUsed, cleanUrl);
+
+  // 2. Seção do Amigo
+  renderFriend(t, expired, friendUsed, cleanUrl);
+
+  // 3. Área do Barbeiro
+  renderOwner(t, expired, friendUsed, inviterUsed);
+}
+
+function renderInviter(t, expired, friendUsed, inviterUsed, cleanUrl) {
+  const badge = document.getElementById('inviterStatusBadge');
+  const title = document.getElementById('inviterTitle');
+  const content = document.getElementById('inviterContent');
+
+  if (expired) {
+    badge.className = 'status-badge red';
+    badge.textContent = 'CONVITE EXPIRADO';
+    title.textContent = `${t.inviterName}, prazo finalizado`;
+    content.innerHTML = `<div class="notice warning">O prazo de 30 dias deste convite expirou. Entre em contato com a Fartir para novas oportunidades.</div>`;
+    return;
+  }
+
+  if (inviterUsed) {
+    badge.className = 'status-badge ok';
+    badge.textContent = 'BENEFÍCIO UTILIZADO';
+    title.textContent = `Parabéns, ${t.inviterName}!`;
+    content.innerHTML = `<div class="notice success">✓ Você já compareceu e utilizou seu corte com 50% de desconto. Convite finalizado com sucesso!</div>`;
+    return;
+  }
+
+  if (friendUsed) {
+    badge.className = 'status-badge ok';
+    badge.textContent = 'DESCONTO LIBERADO!';
+    title.textContent = `${t.inviterName}, seu desconto tá liberado!`;
+    content.innerHTML = `
+      <div class="notice success">
+        🎉 <strong>Seu amigo ${t.friendName || 'indicado'} já cortou o cabelo na Fartir!</strong><br>
+        O seu corte de R$ 40 sai por apenas <strong>R$ 20</strong> até ${formatFartirDate(getTicketExpirationDate(t))}.
+      </div>
+      <p>Entre em contato pelo WhatsApp da Fartir para agendar o seu corte:</p>
+      <button class="btn whatsapp" id="bookInviterBtn">AGENDAR MEU CORTE A R$ 20 NO WHATSAPP ↗</button>
+    `;
+    document.getElementById('bookInviterBtn').onclick = () => {
+      const msg = `Fala Matheus! Aqui é o ${t.inviterName}. O meu amigo ${t.friendName || ''} já cortou e quero agendar meu corte com o desconto liberado do convite (${cleanUrl})!`;
+      openWhatsApp(FARTIR_CONFIG.OWNER_PHONE, msg);
+    };
+    return;
+  }
+
+  // Ativo, aguardando amigo
+  badge.className = 'status-badge ok';
+  badge.textContent = 'ATIVO · COMPARTILHE E GANHE';
+  title.textContent = `${t.inviterName}, envie para um amigo!`;
+  content.innerHTML = `
+    <p>Envie este link para os seus amigos. <strong>O primeiro que agendar e cortar paga R$ 20</strong> e destrava o mesmo desconto de R$ 20 para você!</p>
+    <div class="btn-row">
+      <button class="btn whatsapp" id="shareWaBtn">ENVIAR CONVITE NO WHATSAPP ↗</button>
+      <button class="btn secondary" id="copyLinkBtn">COPIAR LINK</button>
+    </div>
+  `;
+
+  document.getElementById('shareWaBtn').onclick = () => {
+    const text = `FARTIR PASS — CONVITE ESPECIAL!\nFala! ${t.inviterName} aqui. Consegui um convite pra você cortar o cabelo com Matheus com 50% de desconto (de R$ 40 por R$ 20).\n\nAcesse o link: ${cleanUrl}\n\nVálido para o primeiro amigo a agendar e cortar!`;
+    openWhatsApp('', text);
+  };
+
+  document.getElementById('copyLinkBtn').onclick = () => {
+    navigator.clipboard?.writeText(cleanUrl);
+    showModal('Link copiado!', `<p>O link <strong>${cleanUrl}</strong> foi copiado para sua área de transferência.</p>`, [{ label: 'OK' }]);
+  };
+}
+
+function renderFriend(t, expired, friendUsed, cleanUrl) {
+  const badge = document.getElementById('friendStatusBadge');
+  const title = document.getElementById('friendTitle');
+  const content = document.getElementById('friendContent');
+
+  if (expired) {
+    badge.className = 'status-badge red';
+    badge.textContent = 'EXPIRADO';
+    title.textContent = 'Prazo encerrado';
+    content.innerHTML = `<div class="notice warning">O prazo de 30 dias deste convite encerrou em ${formatFartirDate(getTicketExpirationDate(t))}.</div>`;
+    return;
+  }
+
+  if (friendUsed) {
+    badge.className = 'status-badge red';
+    badge.textContent = 'VAGA DE AMIGO ESGOTADA';
+    title.textContent = 'Convite já utilizado';
+    content.innerHTML = `
+      <div class="notice warning">
+        <strong>A vaga deste convite já foi preenchida:</strong> o amigo <strong>${t.friendName || 'indicado'}</strong> já realizou o corte e garantiu o desconto. Como o convite dá direito a apenas 1 amigo com desconto, esta vaga não está mais disponível.
+      </div>
+    `;
+    return;
+  }
+
+  badge.className = 'status-badge ok';
+  badge.textContent = '1 VAGA DISPONÍVEL';
+  title.textContent = `${t.inviterName} indicou você!`;
+  content.innerHTML = `
+    <p>Você recebeu a chance de cortar seu cabelo no Laboratório de Cortes FARTIR por <strong>apenas R$ 20</strong> (metade do preço!).</p>
+    <div class="notice info">
+      ⚠️ <strong>Atenção:</strong> Cada convite possui apenas <strong>1 vaga</strong> para amigo. O desconto fica garantido para o primeiro que agendar e comparecer.
+    </div>
+    <button class="btn whatsapp" id="friendBookBtn">
+      QUERO AGENDAR NO WHATSAPP E GARANTIR MINHA VAGA ↗
+    </button>
+  `;
+
+  document.getElementById('friendBookBtn').onclick = () => {
+    const msg = `Fala Matheus! Recebi o convite do ${t.inviterName} (Link: ${cleanUrl}) e quero agendar meu corte com 50% de desconto! Quais horários você tem disponíveis?`;
+    openWhatsApp(FARTIR_CONFIG.OWNER_PHONE, msg);
+  };
+}
+
+function renderOwner(t, expired, friendUsed, inviterUsed) {
+  const container = document.getElementById('ownerControls');
+
+  if (friendUsed && inviterUsed) {
+    container.innerHTML = `<div class="notice success">✓ <strong>Convite 100% concluído:</strong> Tanto o amigo (${t.friendName}) quanto o titular (${t.inviterName}) já cortaram com desconto.</div>`;
+    return;
+  }
+
+  let html = '';
+
+  if (!friendUsed) {
+    html += `
+      <div class="card" style="background:#090908; border-color:var(--card-border); padding:16px;">
+        <span class="card-kicker">[ ETAPA 1 · CORTE DO AMIGO ]</span>
+        <h4 style="margin:6px 0 10px; font-size:15px; text-transform:uppercase;">Validar Corte do Amigo Indicado</h4>
+        <div class="field-group">
+          <label class="field-label">Nome do amigo que está na cadeira:</label>
+          <input class="field-input" id="ownerFriendNameInput" placeholder="Ex.: Pedro" maxlength="50">
+        </div>
+        <div class="field-group">
+          <label class="field-label">Sua senha de barbeiro:</label>
+          <input class="field-input" id="ownerPinFriend" type="password" placeholder="Digite sua senha">
+        </div>
+        <button class="btn" id="confirmFriendBtn">CONFIRMAR CORTE DO AMIGO (R$ 20) →</button>
+      </div>
+    `;
+  } else {
+    html += `
+      <div class="notice success" style="margin-bottom:14px;">
+        ✓ <strong>Amigo atendido:</strong> ${t.friendName} cortou em ${formatFartirDate(t.friendAttendedAt)}. Vaga de amigo consumida!
+      </div>
+      <button class="btn secondary" id="notifyInviterBtn" style="margin-bottom:18px;">
+        NOTIFICAR ${t.inviterName.toUpperCase()} NO WHATSAPP QUE O DESCONTO FOI LIBERADO ↗
+      </button>
+    `;
+  }
+
+  if (friendUsed && !inviterUsed) {
+    html += `
+      <div class="card" style="background:#090908; border-color:var(--card-border); padding:16px;">
+        <span class="card-kicker">[ ETAPA 2 · CORTE DO TITULAR ]</span>
+        <h4 style="margin:6px 0 10px; font-size:15px; text-transform:uppercase;">Validar Corte de ${t.inviterName}</h4>
+        <p style="font-size:12px; color:var(--muted); margin-bottom:12px;">Quando ${t.inviterName} vier aproveitar o desconto de R$ 20:</p>
+        <div class="field-group">
+          <label class="field-label">Sua senha de barbeiro:</label>
+          <input class="field-input" id="ownerPinInviter" type="password" placeholder="Digite sua senha">
+        </div>
+        <button class="btn" id="confirmInviterBtn">CONFIRMAR CORTE DE ${t.inviterName.toUpperCase()} (R$ 20) →</button>
+      </div>
+    `;
+  }
+
+  container.innerHTML = html;
+
+  const confirmFriendBtn = document.getElementById('confirmFriendBtn');
+  if (confirmFriendBtn) {
+    confirmFriendBtn.onclick = async () => {
+      const name = (document.getElementById('ownerFriendNameInput').value || '').trim();
+      const pin = (document.getElementById('ownerPinFriend').value || '').trim();
+
+      try {
+        await validateFriendCutCloud(t.slug, name, pin);
+        await renderPage();
+        showModal(
+          'Corte do Amigo Confirmado!',
+          `<p>O atendimento de <strong>${name || 'Amigo'}</strong> foi registrado com sucesso.</p><p>O desconto de 50% de <strong>${t.inviterName}</strong> está oficialmente DESBLOQUEADO!</p>`,
+          [
+            {
+              label: 'AVISAR ' + t.inviterName.toUpperCase() + ' NO WHATSAPP ↗',
+              onClick: () => {
+                const msg = `Fala ${t.inviterName}! Seu amigo ${name || 'indicado'} acabou de cortar o cabelo aqui na Fartir. O seu corte de 50% de desconto (R$ 20) está liberado! Quando quer agendar o seu?`;
+                openWhatsApp(t.inviterPhone, msg);
+              }
+            },
+            { label: 'CONCLUIR', className: 'secondary' }
+          ]
+        );
+      } catch (err) {
+        alert(err.message);
+      }
+    };
+  }
+
+  const notifyInviterBtn = document.getElementById('notifyInviterBtn');
+  if (notifyInviterBtn) {
+    notifyInviterBtn.onclick = () => {
+      const msg = `Fala ${t.inviterName}! Seu amigo ${t.friendName || 'indicado'} já cortou o cabelo aqui na Fartir. O seu corte de 50% de desconto (R$ 20) está liberado! Quando quer vir cortar?`;
+      openWhatsApp(t.inviterPhone, msg);
+    };
+  }
+
+  const confirmInviterBtn = document.getElementById('confirmInviterBtn');
+  if (confirmInviterBtn) {
+    confirmInviterBtn.onclick = async () => {
+      const pin = (document.getElementById('ownerPinInviter').value || '').trim();
+      try {
+        await validateInviterCutCloud(t.slug, pin);
+        await renderPage();
+        showModal(
+          'Convite Concluído!',
+          `<p>O corte de <strong>${t.inviterName}</strong> com 50% de desconto foi validado com sucesso.</p><p>O ciclo deste convite foi encerrado com êxito! 🎉</p>`,
+          [{ label: 'FECHAR' }]
+        );
+      } catch (err) {
+        alert(err.message);
+      }
+    };
+  }
+}
+
+// Inicia
+setInterval(updateClockOnly, 1000);
+renderPage();
+</script>
+
+</body>
+</html>
+

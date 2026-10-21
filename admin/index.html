@@ -3,11 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#090909">
-  <title>FARTIR PASS · Painel do Barbeiro (Admin)</title>
+  <meta name="theme-color" content="#0a0a0a">
+  <title>FARTIR ADMIN · Gerador de Convites</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,300..900&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..125,300..900&family=JetBrains+Mono:wght@400;600;700;800&family=Permanent+Marker&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #090909;
@@ -22,12 +22,13 @@
       --amber: #e5ad67;
       --font-main: 'Archivo', system-ui, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
+      --font-brush: 'Permanent Marker', cursive;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background-color: var(--bg);
-      background-image: radial-gradient(circle at 50% 0%, rgba(211, 20, 29, 0.15), transparent 40%);
+      background-image: radial-gradient(circle at 50% 0%, rgba(211, 20, 29, 0.15), transparent 45%);
       color: var(--ink);
       font-family: var(--font-main);
       min-height: 100vh;
@@ -35,14 +36,42 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    a { color: inherit; text-decoration: none; }
-    button, input { font: inherit; }
-    button { cursor: pointer; }
-
     .wrap {
-      width: min(100%, 860px);
+      width: min(100%, 960px);
       margin: 0 auto;
       padding: 24px 18px 80px;
+    }
+
+    /* Login Overlay */
+    .login-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 2000;
+    }
+    .login-box {
+      background: #141413;
+      border: 1px solid var(--card-border);
+      padding: 32px 28px;
+      width: min(100%, 380px);
+      text-align: center;
+    }
+    .login-box h2 {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .login-box p {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 20px;
     }
 
     header.admin-header {
@@ -51,22 +80,22 @@
       align-items: center;
       padding-bottom: 20px;
       border-bottom: 1px solid var(--card-border);
+      margin-bottom: 28px;
       flex-wrap: wrap;
-      gap: 14px;
+      gap: 12px;
     }
     .brand-title {
-      font-size: 24px;
+      font-size: 22px;
       font-weight: 900;
-      letter-spacing: -0.04em;
+      letter-spacing: -0.03em;
       text-transform: uppercase;
     }
     .brand-title em { color: var(--red); font-style: normal; }
     .brand-subtitle {
       font-family: var(--font-mono);
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: 0.14em;
+      font-size: 10px;
       color: var(--muted);
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       margin-top: 2px;
     }
@@ -74,43 +103,32 @@
     .card {
       background: var(--card);
       border: 1px solid var(--card-border);
-      padding: 24px 22px;
-      margin-top: 24px;
-      position: relative;
-    }
-    .card::before {
-      content: '';
-      position: absolute;
-      top: -1px;
-      left: 0;
-      width: 50px;
-      height: 3px;
-      background: var(--red);
+      padding: 24px;
+      margin-bottom: 24px;
     }
     .card-title {
-      font-size: 20px;
+      font-size: 18px;
       font-weight: 900;
-      letter-spacing: -0.02em;
       text-transform: uppercase;
+      letter-spacing: -0.01em;
       margin-bottom: 6px;
     }
     .card-desc {
       font-size: 13px;
       color: var(--muted);
-      line-height: 1.5;
       margin-bottom: 18px;
+      line-height: 1.5;
     }
 
     .slot-info-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(211, 20, 29, 0.1);
-      border: 1px solid rgba(211, 20, 29, 0.4);
-      padding: 6px 12px;
+      display: inline-block;
       font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--red-bright);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 6px 12px;
+      background: rgba(211, 20, 29, 0.15);
+      border: 1px solid var(--red);
+      color: var(--ink);
       margin-bottom: 16px;
     }
 
@@ -119,6 +137,9 @@
       grid-template-columns: 1fr 1fr;
       gap: 14px;
       margin-bottom: 16px;
+    }
+    @media (max-width: 600px) {
+      .form-grid { grid-template-columns: 1fr; }
     }
     .field { display: flex; flex-direction: column; gap: 6px; }
     label.field-label {
@@ -141,9 +162,7 @@
       outline: none;
       transition: border 0.15s ease;
     }
-    input.field-input:focus {
-      border-color: var(--red-bright);
-    }
+    input.field-input:focus { border-color: var(--red-bright); }
 
     .btn {
       display: inline-flex;
@@ -160,6 +179,7 @@
       background: var(--red);
       color: #fff;
       transition: all 0.18s ease;
+      cursor: pointer;
     }
     .btn:hover:not(:disabled) {
       background: var(--ink);
@@ -200,8 +220,8 @@
     table.data-table {
       width: 100%;
       border-collapse: collapse;
+      font-size: 12px;
       text-align: left;
-      font-size: 13px;
     }
     table.data-table th {
       background: #141413;
@@ -217,62 +237,30 @@
     table.data-table td {
       padding: 12px 14px;
       border-bottom: 1px solid rgba(238, 230, 215, 0.06);
-      color: var(--ink);
+      vertical-align: middle;
     }
-    table.data-table tr:last-child td { border-bottom: none; }
+    table.data-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
 
     .badge {
+      display: inline-block;
       font-family: var(--font-mono);
       font-size: 10px;
       font-weight: 700;
-      padding: 3px 8px;
-      border: 1px solid var(--card-border);
-      display: inline-block;
+      padding: 2px 6px;
       text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--soft);
     }
-    .badge.green { border-color: rgba(143, 209, 131, 0.4); color: var(--green); }
-    .badge.amber { border-color: rgba(229, 173, 103, 0.4); color: var(--amber); }
-    .badge.red { border-color: rgba(211, 20, 29, 0.4); color: var(--red-bright); }
-
-    .login-overlay {
-      position: fixed;
-      inset: 0;
-      background: #090909;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      z-index: 9999;
+    .badge.green {
+      background: rgba(143, 209, 131, 0.15);
+      color: var(--green);
     }
-    .login-box {
-      background: #121211;
-      border: 1px solid rgba(211, 20, 29, 0.4);
-      padding: 34px 28px;
-      width: min(100%, 380px);
-      text-align: center;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
-      position: relative;
-    }
-    .login-box::before {
-      content: '';
-      position: absolute;
-      top: -1px;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--red);
-    }
-    .login-box h2 {
-      font-size: 22px;
-      font-weight: 900;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-    .login-box p {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      color: var(--muted);
-      margin-bottom: 22px;
+    .badge.red {
+      background: rgba(211, 20, 29, 0.15);
+      color: var(--red-bright);
     }
 
     .modal-overlay {
@@ -284,19 +272,14 @@
       align-items: center;
       justify-content: center;
       padding: 16px;
-      z-index: 1000;
+      z-index: 3000;
     }
     .modal-overlay.open { display: flex; }
     .modal-box {
       background: #141413;
-      border: 1px solid rgba(238, 230, 215, 0.25);
+      border: 1px solid var(--card-border);
+      padding: 24px;
       width: min(100%, 480px);
-      padding: 26px 22px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
-    }
-
-    @media (max-width: 580px) {
-      .form-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -320,20 +303,20 @@
   <header class="admin-header">
     <div>
       <div class="brand-title">FARTIR<em>.</em> PASS</div>
-      <div class="brand-subtitle">PAINEL EXCLUSIVO DO BARBEIRO · GERADOR DE CONVITES</div>
+      <div class="brand-subtitle">PAINEL DO BARBEIRO · GERADOR DE CONVITES</div>
     </div>
     <div>
       <button class="btn secondary small" id="logoutBtn">SAIR</button>
     </div>
   </header>
 
-  <!-- FORMULÁRIO DE CRIAÇÃO AUTOMÁTICA -->
+  <!-- FORMULÁRIO DE CRIAÇÃO -->
   <div class="card">
     <h2 class="card-title">+ Emitir Novo Convite</h2>
-    <p class="card-desc">Digite o nome do cliente. O sistema detecta a <strong>menor vaga livre</strong> (1, 2, 3...) e gera o link automaticamente.</p>
+    <p class="card-desc">Digite o nome do cliente. O sistema detecta a <strong>menor vaga livre</strong> (1, 2, 3...) e inicia a contagem de 30 dias corridos imediatamente.</p>
     
     <div class="slot-info-badge" id="nextSlotBadge">
-      ⚡ Próxima vaga livre: <strong>convite1</strong>
+      ⚡ Próxima vaga automática: <strong>convite1</strong>
     </div>
 
     <form id="createTicketForm">
@@ -351,13 +334,13 @@
     </form>
   </div>
 
-  <!-- TABELA DE CONVITES ATIVOS -->
+  <!-- TABELA DE CONVITES -->
   <div class="card">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
       <h2 class="card-title" style="margin-bottom:0;">CONVITES EMITIDOS</h2>
       <span class="badge" id="ticketCountBadge">0 CONVITES</span>
     </div>
-    <p class="card-desc">Monitoramento em tempo real. Quando um convite atinge 30 dias ou ambos cortam, sua vaga é liberada automaticamente para o próximo.</p>
+    <p class="card-desc">Monitoramento em tempo real. Quando um convite atinge 30 dias ou ambos cortam, sua vaga é liberada automaticamente para o próximo cliente.</p>
     
     <div class="table-box">
       <table class="data-table">
@@ -448,7 +431,6 @@ async function renderTickets() {
   const tickets = await getAllTicketsCloud();
   document.getElementById('ticketCountBadge').textContent = `${tickets.length} CONVITE(S)`;
   
-  // Atualiza badge da próxima vaga livre
   const nextFreeSlot = await getNextAvailableNumberCloud();
   document.getElementById('nextSlotBadge').innerHTML = `⚡ Próxima vaga automática: <strong>convite${nextFreeSlot}</strong>`;
 
@@ -463,15 +445,13 @@ async function renderTickets() {
     const tr = document.createElement('tr');
     const expired = isTicketExpired(t);
     const finished = !!(t.friendAttendedAt && t.inviterAttendedAt);
-    const directTestUrl = `../pass/index.html?c=${t.slug}`;
+    const directTestUrl = `../${t.slug}/`;
 
     let statusPill = '';
     if (finished) {
       statusPill = `<span class="badge green">✓ Concluído (Vaga Liberada)</span>`;
     } else if (expired) {
       statusPill = `<span class="badge red">Expirado (Vaga Liberada)</span>`;
-    } else if (!t.activatedAt) {
-      statusPill = `<span class="badge">Aguardando Ativação</span>`;
     } else {
       const remainMs = Math.max(0, getTicketExpirationDate(t) - Date.now());
       const days = Math.floor(remainMs / 86400000);
@@ -542,7 +522,7 @@ document.getElementById('createTicketForm').onsubmit = async (e) => {
     await renderTickets();
 
     const cleanUrl = `https://fartir.com.br/${newT.slug}`;
-    const testUrl = `../pass/index.html?c=${newT.slug}`;
+    const testUrl = `../${newT.slug}/`;
 
     openAdminModal(
       `Convite #${String(newT.number).padStart(2, '0')} Emitido com Sucesso!`,
@@ -551,7 +531,7 @@ document.getElementById('createTicketForm').onsubmit = async (e) => {
         <div style="background:#000; border:1px solid var(--card-border); padding:10px; font-family:var(--font-mono); font-size:12px; color:var(--red-bright); margin:10px 0;">
           ${cleanUrl}
         </div>
-        <p style="font-size:12px;">O contador de 30 dias está pausado. Ele só inicia quando ${newT.inviterName} abrir e tocar em Ativar.</p>
+        <p style="font-size:12px;">O prazo de <strong>30 dias corridos</strong> já começou a contar automaticamente a partir de agora!</p>
       `,
       [
         {

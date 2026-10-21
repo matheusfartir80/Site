@@ -1,10 +1,6 @@
 /**
  * FARTIR PASS ENGINE — NUVEM SUPABASE + CACHE LOCAL
  * Laboratório de Cortes · Contagem MG
- * 
- * Agora 100% sincronizado na nuvem:
- * - O convite criado no celular do Matheus aparece em qualquer celular do mundo!
- * - Validações e ativações atualizam em tempo real para todos.
  */
 
 'use strict';
@@ -30,13 +26,15 @@ function getHeaders() {
 // Converte do banco (snake_case) para o site (camelCase)
 function mapFromDb(row) {
   if (!row) return null;
+  const createdAt = Number(row.created_at) || Date.now();
+  const activatedAt = Number(row.activated_at) || createdAt; // O prazo começa na emissão!
   return {
     slug: row.slug,
     number: row.number,
     inviterName: row.inviter_name || '',
     inviterPhone: row.inviter_phone || '',
-    createdAt: Number(row.created_at) || Date.now(),
-    activatedAt: row.activated_at ? Number(row.activated_at) : null,
+    createdAt: createdAt,
+    activatedAt: activatedAt,
     friendName: row.friend_name || null,
     friendAttendedAt: row.friend_attended_at ? Number(row.friend_attended_at) : null,
     inviterAttendedAt: row.inviter_attended_at ? Number(row.inviter_attended_at) : null
@@ -45,17 +43,33 @@ function mapFromDb(row) {
 
 // Converte do site para o banco
 function mapToDb(t) {
+  const startTime = t.activatedAt || t.createdAt || Date.now();
   return {
     slug: t.slug,
     number: t.number,
     inviter_name: t.inviterName,
     inviter_phone: t.inviterPhone || '',
-    created_at: t.createdAt || Date.now(),
-    activated_at: t.activatedAt || null,
+    created_at: t.createdAt || startTime,
+    activated_at: startTime,
     friend_name: t.friendName || null,
     friend_attended_at: t.friendAttendedAt || null,
     inviter_attended_at: t.inviterAttendedAt || null
   };
+}
+
+function getTicketStartTime(t) {
+  if (!t) return Date.now();
+  return Number(t.activatedAt) || Number(t.createdAt) || Date.now();
+}
+
+function isTicketExpired(t) {
+  if (!t) return false;
+  return Date.now() > (getTicketStartTime(t) + FARTIR_CONFIG.CONVITE_DURATION_MS);
+}
+
+function getTicketExpirationDate(t) {
+  if (!t) return null;
+  return getTicketStartTime(t) + FARTIR_CONFIG.CONVITE_DURATION_MS;
 }
 
 // Busca todos os convites da nuvem
@@ -67,7 +81,6 @@ async function getAllTicketsCloud() {
     if (res.ok) {
       const data = await res.json();
       const mapped = data.map(mapFromDb);
-      // Salva no cache local para navegação ultra-rápida
       localStorage.setItem(FARTIR_CONFIG.STORE_KEY, JSON.stringify({ tickets: mapped }));
       return mapped;
     }
@@ -75,7 +88,6 @@ async function getAllTicketsCloud() {
     console.warn('Usando cache local (offline):', e);
   }
 
-  // Fallback cache local se faltar internet
   try {
     const raw = localStorage.getItem(FARTIR_CONFIG.STORE_KEY);
     if (raw) {
@@ -101,19 +113,8 @@ async function getTicketBySlugCloud(slug) {
     console.warn('Erro ao consultar convite na nuvem:', e);
   }
 
-  // Fallback se falhar
   const all = await getAllTicketsCloud();
   return all.find(t => t.slug === slug) || null;
-}
-
-function isTicketExpired(t) {
-  if (!t || !t.activatedAt) return false;
-  return Date.now() > (t.activatedAt + FARTIR_CONFIG.CONVITE_DURATION_MS);
-}
-
-function getTicketExpirationDate(t) {
-  if (!t || !t.activatedAt) return null;
-  return t.activatedAt + FARTIR_CONFIG.CONVITE_DURATION_MS;
 }
 
 // Encontra a menor vaga livre na nuvem (convite1, convite2...)
@@ -136,22 +137,22 @@ async function getNextAvailableNumberCloud() {
   return n;
 }
 
-// Cria novo convite na nuvem Supabase
+// Cria novo convite na nuvem Supabase (inicia os 30 dias na hora da criação)
 async function createTicketCloud(name, phone) {
   const slotNum = await getNextAvailableNumberCloud();
   const slug = `convite${slotNum}`;
 
-  // Se já havia um antigo expirado nessa vaga, remove do banco
   await deleteTicketCloud(slug);
 
   const cleanPhone = (phone || '').replace(/\D/g, '');
+  const now = Date.now();
   const newTicket = {
     slug,
     number: slotNum,
     inviterName: name.trim(),
     inviterPhone: cleanPhone ? (cleanPhone.startsWith('55') ? cleanPhone : '55' + cleanPhone) : '',
-    createdAt: Date.now(),
-    activatedAt: null,
+    createdAt: now,
+    activatedAt: now,
     friendName: null,
     friendAttendedAt: null,
     inviterAttendedAt: null
@@ -168,16 +169,6 @@ async function createTicketCloud(name, phone) {
   }
 
   return newTicket;
-}
-
-// Ativa o convite na nuvem
-async function activateTicketCloud(slug) {
-  const res = await fetch(`${FARTIR_CONFIG.SUPABASE_URL}/fartir_tickets?slug=eq.${encodeURIComponent(slug)}`, {
-    method: 'PATCH',
-    headers: getHeaders(),
-    body: JSON.stringify({ activated_at: Date.now() })
-  });
-  return res.ok;
 }
 
 // Barbeiro valida corte do amigo na nuvem
