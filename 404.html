@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <title>Fartir · Redirecionando...</title>
+  <script>
+    // GitHub Pages SPA Router:
+    // Se a rota for /convite1, /convite2, /admin, redireciona para a pasta correspondente
+    var pathname = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
+    var parts = pathname.split('/');
+    var firstSegment = parts[0] || '';
+
+    if (firstSegment.indexOf('convite') === 0) {
+      window.location.replace('/pass/?c=' + encodeURIComponent(firstSegment));
+    } else if (firstSegment === 'admin') {
+      window.location.replace('/admin/');
+    } else if (firstSegment === 'orcamento') {
+      window.location.replace('/orcamento/');
+    } else {
+      window.location.replace('/');
+    }
+  </script>
+</head>
+<body style="background:#090909; color:#eee6d7; font-family:sans-serif; text-align:center; padding-top:20vh;">
+  <p>Carregando FARTIR...</p>
+</body>
+</html>
