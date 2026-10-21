@@ -12,7 +12,7 @@
 
 const FARTIR_CONFIG = {
   STORE_KEY: 'fartir_pass_tickets_v1',
-  ADMIN_PIN: '2468',             // Senha do Matheus
+  ADMIN_PIN: 'admin',            // Senha do painel e validação
   OWNER_PHONE: '5531993811525',   // WhatsApp da Fartir
   CONVITE_DURATION_MS: 30 * 24 * 60 * 60 * 1000 // 30 dias corridos
 };
@@ -69,14 +69,6 @@ function getTicketExpirationDate(t) {
   return t.activatedAt + FARTIR_CONFIG.CONVITE_DURATION_MS;
 }
 
-/**
- * ALGORITMO INTELIGENTE: MENOR NÚMERO DISPONÍVEL
- * Varre as vagas (1, 2, 3...) e acha a menor vaga que não está em uso ativo.
- * Uma vaga está liberada se:
- * - O convite anterior expirou (30 dias)
- * - OU ambos os cortes já foram concluídos
- * - OU o convite foi cancelado/excluído
- */
 function getNextAvailableNumber() {
   const db = getFartirDB();
   const occupiedNumbers = new Set();
@@ -85,7 +77,6 @@ function getNextAvailableNumber() {
     const finished = !!(t.friendAttendedAt && t.inviterAttendedAt);
     const expired = isTicketExpired(t);
 
-    // Se ainda está em andamento (não acabou os 30 dias e nem ambos cortaram), a vaga está ocupada
     if (!finished && !expired) {
       occupiedNumbers.add(t.number);
     }
@@ -98,16 +89,11 @@ function getNextAvailableNumber() {
   return n;
 }
 
-/**
- * CRIAÇÃO 100% AUTOMÁTICA
- * O Matheus só passa o nome e o WhatsApp. O número vem automático!
- */
 function createTicket(name, phone) {
   const db = getFartirDB();
   const slotNum = getNextAvailableNumber();
   const slug = `convite${slotNum}`;
 
-  // Se já havia um convite antigo finalizado/expirado ocupando esse slug, ele é substituído pelo novo titular
   db.tickets = db.tickets.filter(t => t.slug !== slug);
 
   const cleanPhone = (phone || '').replace(/\D/g, '');
@@ -124,7 +110,6 @@ function createTicket(name, phone) {
   };
 
   db.tickets.push(newTicket);
-  // Mantém ordenado pelo número da vaga
   db.tickets.sort((a, b) => a.number - b.number);
   saveFartirDB(db);
   return newTicket;
