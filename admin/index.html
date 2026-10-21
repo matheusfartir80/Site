@@ -441,23 +441,25 @@ function openAdminModal(title, bodyHtml, actions = []) {
   document.getElementById('adminModal').classList.add('open');
 }
 
-function renderTickets() {
-  const db = getFartirDB();
+async function renderTickets() {
   const tbody = document.getElementById('ticketsTableBody');
-  document.getElementById('ticketCountBadge').textContent = `${db.tickets.length} CONVITE(S)`;
+  tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:20px;">Carregando convites da nuvem...</td></tr>`;
+
+  const tickets = await getAllTicketsCloud();
+  document.getElementById('ticketCountBadge').textContent = `${tickets.length} CONVITE(S)`;
   
   // Atualiza badge da próxima vaga livre
-  const nextFreeSlot = getNextAvailableNumber();
+  const nextFreeSlot = await getNextAvailableNumberCloud();
   document.getElementById('nextSlotBadge').innerHTML = `⚡ Próxima vaga automática: <strong>convite${nextFreeSlot}</strong>`;
 
   tbody.innerHTML = '';
 
-  if (db.tickets.length === 0) {
+  if (tickets.length === 0) {
     tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--muted); padding:20px;">Nenhum convite ativo no momento.</td></tr>`;
     return;
   }
 
-  db.tickets.slice().sort((a, b) => a.number - b.number).forEach(t => {
+  tickets.slice().sort((a, b) => a.number - b.number).forEach(t => {
     const tr = document.createElement('tr');
     const expired = isTicketExpired(t);
     const finished = !!(t.friendAttendedAt && t.inviterAttendedAt);
@@ -471,7 +473,7 @@ function renderTickets() {
     } else if (!t.activatedAt) {
       statusPill = `<span class="badge">Aguardando Ativação</span>`;
     } else {
-      const remainMs = Math.max(0, getTicketExpirationDate(t) - fartirNow());
+      const remainMs = Math.max(0, getTicketExpirationDate(t) - Date.now());
       const days = Math.floor(remainMs / 86400000);
       statusPill = `<span class="badge green">Ativo · ${days}d restantes</span>`;
     }
@@ -522,22 +524,22 @@ function copyInviteLink(slug) {
   alert(`Link copiado: ${url}`);
 }
 
-function handleDeleteSlot(slug, name) {
+async function handleDeleteSlot(slug, name) {
   if (confirm(`Deseja cancelar o convite de ${name} e liberar a vaga ${slug} imediatamente?`)) {
-    deleteTicket(slug);
-    renderTickets();
+    await deleteTicketCloud(slug);
+    await renderTickets();
   }
 }
 
-document.getElementById('createTicketForm').onsubmit = (e) => {
+document.getElementById('createTicketForm').onsubmit = async (e) => {
   e.preventDefault();
   const name = document.getElementById('ticketName').value;
   const phone = document.getElementById('ticketPhone').value;
 
   try {
-    const newT = createTicket(name, phone);
+    const newT = await createTicketCloud(name, phone);
     document.getElementById('createTicketForm').reset();
-    renderTickets();
+    await renderTickets();
 
     const cleanUrl = `https://fartir.com.br/${newT.slug}`;
     const testUrl = `../pass/index.html?c=${newT.slug}`;

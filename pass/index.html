@@ -658,8 +658,16 @@ function updateClockOnly() {
 /**
  * RENDERIZAÇÃO ESTRUTURAL
  */
-function renderPage() {
-  currentTicket = getTicketBySlug(currentSlug);
+async function renderPage() {
+  currentTicket = await getTicketBySlugCloud(currentSlug);
+
+  // Limpa a barra de endereço para ficar bonito sem ?c=
+  if (window.location.search && window.location.search.includes('c=')) {
+    try {
+      window.history.replaceState(null, '', '/' + currentSlug);
+    } catch (e) {}
+  }
+
   if (!currentTicket) {
     document.getElementById('ticketBadge').textContent = 'CONVITE';
     document.getElementById('inviterNameDisplay').textContent = 'FARTIR PASS';
@@ -772,9 +780,9 @@ function renderInviter(t, activated, expired, friendUsed, inviterUsed, cleanUrl)
         [
           {
             label: 'SIM, ATIVAR AGORA →',
-            onClick: () => {
-              activateTicket(t.slug);
-              renderPage();
+            onClick: async () => {
+              await activateTicketCloud(t.slug);
+              await renderPage();
             }
           },
           { label: 'CANCELAR', className: 'secondary' }
@@ -959,13 +967,13 @@ function renderOwner(t, activated, expired, friendUsed, inviterUsed) {
 
   const confirmFriendBtn = document.getElementById('confirmFriendBtn');
   if (confirmFriendBtn) {
-    confirmFriendBtn.onclick = () => {
+    confirmFriendBtn.onclick = async () => {
       const name = (document.getElementById('ownerFriendNameInput').value || '').trim();
       const pin = (document.getElementById('ownerPinFriend').value || '').trim();
 
       try {
-        const updated = validateFriendCut(t.slug, name, pin);
-        renderPage();
+        const updated = await validateFriendCutCloud(t.slug, name, pin);
+        await renderPage();
         showModal(
           'Corte do Amigo Confirmado!',
           `<p>O atendimento de <strong>${name || 'Amigo'}</strong> foi registrado com sucesso.</p><p>O desconto de 50% de <strong>${t.inviterName}</strong> está oficialmente DESBLOQUEADO!</p>`,
@@ -986,19 +994,19 @@ function renderOwner(t, activated, expired, friendUsed, inviterUsed) {
 
   const notifyInviterBtn = document.getElementById('notifyInviterBtn');
   if (notifyInviterBtn) {
-    notifyInviterBtn.onclick = () => {
-      const latest = getTicketBySlug(t.slug) || t;
+    notifyInviterBtn.onclick = async () => {
+      const latest = await getTicketBySlugCloud(t.slug) || t;
       notifyInviterWa(latest);
     };
   }
 
   const confirmInviterBtn = document.getElementById('confirmInviterBtn');
   if (confirmInviterBtn) {
-    confirmInviterBtn.onclick = () => {
+    confirmInviterBtn.onclick = async () => {
       const pin = (document.getElementById('ownerPinInviter').value || '').trim();
       try {
-        validateInviterCut(t.slug, pin);
-        renderPage();
+        await validateInviterCutCloud(t.slug, pin);
+        await renderPage();
         showModal('Convite Concluído!', `<p>O corte de <strong>${t.inviterName}</strong> foi validado com sucesso.</p>`, [{ label: 'OK' }]);
       } catch (err) {
         alert(err.message);
