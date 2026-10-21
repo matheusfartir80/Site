@@ -145,7 +145,7 @@
       line-height: 1.6;
     }
 
-    /* Pricing - DESTAQUE EM VERDE (GANHO!) */
+    /* Pricing - DESTAQUE EM VERDE */
     .pricing-grid {
       display: grid;
       grid-template-columns: 1fr 1.25fr;
@@ -202,7 +202,7 @@
       font-weight: 700;
     }
 
-    /* Contador - Inicialmente Oculto até o Titular Clicar */
+    /* Contador */
     .countdown-box {
       border: 1px solid rgba(37, 211, 102, 0.4);
       background: linear-gradient(135deg, rgba(37, 211, 102, 0.12), rgba(18, 18, 17, 0.95) 70%);
@@ -357,37 +357,6 @@
       margin-top: 14px;
     }
 
-    /* Gavetas Recolhidas */
-    .drawer-trigger {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid var(--card-border);
-      padding: 14px 18px;
-      margin-bottom: 16px;
-      cursor: pointer;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--soft);
-      transition: all 0.2s ease;
-    }
-    .drawer-trigger:hover {
-      background: rgba(255, 255, 255, 0.06);
-      border-color: var(--green);
-      color: var(--ink);
-    }
-    .drawer-content {
-      display: none;
-      margin-bottom: 20px;
-    }
-    .drawer-content.open {
-      display: block;
-      animation: fadeIn 0.25s ease;
-    }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(-8px); }
       to { opacity: 1; transform: translateY(0); }
@@ -457,6 +426,15 @@
       color: var(--soft);
     }
 
+    .drawer-content {
+      display: none;
+      margin-bottom: 20px;
+    }
+    .drawer-content.open {
+      display: block;
+      animation: fadeIn 0.25s ease;
+    }
+
     /* Rodapé */
     footer.site-footer {
       border-top: 1px solid var(--card-border);
@@ -506,12 +484,12 @@
   <!-- HERO (NOME GIGANTE) -->
   <section class="hero">
     <div class="hero-target-box">
-      <span class="hero-kicker">CONVITE EXCLUSIVO</span>
+      <span class="hero-kicker" id="heroKicker">CONVITE EXCLUSIVO</span>
       <h1 class="hero-name" id="inviterNameDisplay">CLIENTE</h1>
-      <div class="hero-tagline">VOCÊ GANHOU 50% DE DESCONTO</div>
+      <div class="hero-tagline" id="heroTagline">VOCÊ GANHOU 50% DE DESCONTO</div>
     </div>
-    <div class="hero-brush">Indicou. Ganhou.</div>
-    <p class="hero-desc">
+    <div class="hero-brush" id="heroBrush">Indicou. Ganhou.</div>
+    <p class="hero-desc" id="heroDesc">
       Dois cortes pela metade do preço. Compartilhe seu convite com um amigo: o primeiro a cortar paga R$ 20 e libera R$ 20 para você também!
     </p>
   </section>
@@ -530,7 +508,7 @@
     </div>
   </div>
 
-  <!-- CONTADOR (Aparece após o clique do titular, ou direto para o amigo) -->
+  <!-- CONTADOR -->
   <section class="countdown-box" id="countdownBox" style="display:none;">
     <div class="countdown-icon" id="clockIcon">⏱</div>
     <div>
@@ -540,7 +518,7 @@
     </div>
   </section>
 
-  <!-- SEÇÃO PRINCIPAL DO TITULAR -->
+  <!-- SEÇÃO 1: TITULAR (Apenas para o link principal) -->
   <article class="card" id="cardInviter">
     <div class="card-head">
       <span class="card-kicker">[ MEU CONVITE ]</span>
@@ -550,23 +528,15 @@
     <div id="inviterContent"></div>
   </article>
 
-  <!-- GATILHO CASO SEJA O AMIGO ABRINDO -->
-  <div class="drawer-trigger" id="friendTriggerBtn" style="display:none;">
-    <span>👉 Você é o amigo indicado? Toque aqui</span>
-    <span>▼</span>
-  </div>
-
-  <!-- SEÇÃO DO AMIGO -->
-  <div class="drawer-content" id="friendDrawer">
-    <article class="card" id="cardFriend" style="margin-bottom:0;">
-      <div class="card-head">
-        <span class="card-kicker">[ AMIGO INDICADO ]</span>
-        <span class="status-badge ok" id="friendStatusBadge">1 VAGA DISPONÍVEL</span>
-      </div>
-      <h2 id="friendTitle">Você foi convidado!</h2>
-      <div id="friendContent"></div>
-    </article>
-  </div>
+  <!-- SEÇÃO 2: AMIGO (Apenas quando acessado via #amigo) -->
+  <article class="card" id="cardFriend" style="display:none;">
+    <div class="card-head">
+      <span class="card-kicker">[ AMIGO CONVIDADO ]</span>
+      <span class="status-badge ok" id="friendStatusBadge">1 VAGA DISPONÍVEL</span>
+    </div>
+    <h2 id="friendTitle">Você foi convidado!</h2>
+    <div id="friendContent"></div>
+  </article>
 
   <!-- GATILHO BARBEIRO NO RODAPÉ -->
   <div style="text-align:center; margin-top:28px;">
@@ -631,10 +601,7 @@ function isFriendMode() {
   return window.location.hash === '#amigo' || new URLSearchParams(window.location.search).has('amigo');
 }
 
-// Toggles das gavetas
-document.getElementById('friendTriggerBtn').onclick = () => {
-  document.getElementById('friendDrawer').classList.toggle('open');
-};
+// Toggle da gaveta do barbeiro
 document.getElementById('ownerTriggerBtn').onclick = () => {
   document.getElementById('ownerDrawer').classList.toggle('open');
 };
@@ -752,35 +719,61 @@ async function renderPage() {
     clockFooter.textContent = `Válido até ${formatFartirDate(getTicketExpirationDate(t))} (30 dias corridos).`;
   }
 
-  // Verifica se o usuário já clicou antes para participar nesta sessão
+  // Verifica se o titular já clicou para participar
   if (sessionStorage.getItem('fartir_participating_' + currentSlug) === 'true') {
     isParticipating = true;
   }
 
-  // Se veio como amigo (#amigo)
+  // SE FOR O AMIGO (#amigo)
   if (isFriendMode()) {
+    document.getElementById('cardInviter').style.display = 'none';
+    document.getElementById('cardFriend').style.display = 'block';
+
+    document.getElementById('heroKicker').textContent = 'INDICAÇÃO ESPECIAL';
+    document.getElementById('heroTagline').textContent = `INDICADO POR ${t.inviterName.toUpperCase()}`;
+    document.getElementById('heroBrush').textContent = 'Seu corte por R$ 20';
+    document.getElementById('heroDesc').textContent = `${t.inviterName} te enviou este convite exclusivo para você cortar o cabelo na Fartir pela metade do preço!`;
+
     clockBox.style.display = 'flex';
     updateClockOnly();
-    document.getElementById('cardInviter').style.display = 'none';
-    document.getElementById('friendTriggerBtn').style.display = 'none';
-    document.getElementById('friendDrawer').classList.add('open');
-    renderFriend(t, expired, friendUsed, cleanUrl);
+    renderFriend(t, expired, friendUsed, cleanUrl, finished);
   } else {
-    // Modo Titular (Herbert)
+    // SE FOR O TITULAR (HERBERT)
     document.getElementById('cardInviter').style.display = 'block';
-    document.getElementById('friendTriggerBtn').style.display = 'flex';
-    renderInviter(t, expired, friendUsed, inviterUsed, cleanUrl);
+    document.getElementById('cardFriend').style.display = 'none';
+
+    document.getElementById('heroKicker').textContent = 'CONVITE EXCLUSIVO';
+    document.getElementById('heroTagline').textContent = 'VOCÊ GANHOU 50% DE DESCONTO';
+    document.getElementById('heroBrush').textContent = 'Indicou. Ganhou.';
+    document.getElementById('heroDesc').textContent = 'Dois cortes pela metade do preço. Compartilhe seu convite com um amigo: o primeiro a cortar paga R$ 20 e libera R$ 20 para você também!';
+
+    renderInviter(t, expired, friendUsed, inviterUsed, cleanUrl, finished);
   }
 
   // Área do Barbeiro
   renderOwner(t, expired, friendUsed, inviterUsed);
 }
 
-function renderInviter(t, expired, friendUsed, inviterUsed, cleanUrl) {
+function renderInviter(t, expired, friendUsed, inviterUsed, cleanUrl, finished) {
   const badge = document.getElementById('inviterStatusBadge');
   const title = document.getElementById('inviterTitle');
   const content = document.getElementById('inviterContent');
   const clockBox = document.getElementById('countdownBox');
+
+  if (finished) {
+    clockBox.style.display = 'flex';
+    updateClockOnly();
+    badge.className = 'status-badge ok';
+    badge.textContent = 'CONVITE CONCLUÍDO';
+    title.textContent = `Missão Cumprida, ${t.inviterName}!`;
+    content.innerHTML = `
+      <div class="notice success">
+        🎉 <strong>Tanto você quanto seu amigo ${t.friendName || ''} já cortaram o cabelo com 50% de desconto!</strong><br>
+        O ciclo deste convite foi encerrado com sucesso. Obrigado pela preferência na Fartir!
+      </div>
+    `;
+    return;
+  }
 
   if (expired) {
     clockBox.style.display = 'flex';
@@ -798,7 +791,7 @@ function renderInviter(t, expired, friendUsed, inviterUsed, cleanUrl) {
     badge.className = 'status-badge ok';
     badge.textContent = 'BENEFÍCIO UTILIZADO';
     title.textContent = `Parabéns, ${t.inviterName}!`;
-    content.innerHTML = `<div class="notice success">✓ Você já compareceu e utilizou seu corte com 50% de desconto. Convite finalizado com sucesso!</div>`;
+    content.innerHTML = `<div class="notice success">✓ Você já compareceu e utilizou seu corte com 50% de desconto.</div>`;
     return;
   }
 
@@ -810,7 +803,7 @@ function renderInviter(t, expired, friendUsed, inviterUsed, cleanUrl) {
     title.textContent = `${t.inviterName}, seu desconto tá liberado!`;
     content.innerHTML = `
       <div class="notice success">
-        🎉 <strong>Seu amigo ${t.friendName || 'indicado'} já cortou o cabelo na Fartir!</strong><br>
+        🎉 <strong>Seu amigo ${t.friendName || 'indicado'} já cortou o cabelo aqui na Fartir!</strong><br>
         O seu corte de R$ 40 sai por apenas <strong>R$ 20</strong> até ${formatFartirDate(getTicketExpirationDate(t))}.
       </div>
       <p>Entre em contato pelo WhatsApp da Fartir para agendar o seu horário:</p>
@@ -859,7 +852,7 @@ function renderInviter(t, expired, friendUsed, inviterUsed, cleanUrl) {
     </div>
   `;
 
-  // Texto exato pedido pelo Matheus
+  // Mensagem do WhatsApp com #amigo
   const friendLink = `${cleanUrl}#amigo`;
   const shareText = `Fala! Consegui um convite exclusivo para cortar cabelo com 50% de desconto (de R$ 40 por R$ 20).\n\nAcesse aqui para garantir a vaga: ${friendLink}`;
 
@@ -869,14 +862,27 @@ function renderInviter(t, expired, friendUsed, inviterUsed, cleanUrl) {
 
   document.getElementById('copyLinkBtn').onclick = () => {
     navigator.clipboard?.writeText(friendLink);
-    showModal('Link copiado!', `<p>O link do convite foi copiado com sucesso:</p><p style="font-family:var(--font-mono); color:var(--green);">${friendLink}</p>`, [{ label: 'OK' }]);
+    showModal('Link copiado!', `<p>O link do convite para seu amigo foi copiado com sucesso:</p><p style="font-family:var(--font-mono); color:var(--green);">${friendLink}</p>`, [{ label: 'OK' }]);
   };
 }
 
-function renderFriend(t, expired, friendUsed, cleanUrl) {
+function renderFriend(t, expired, friendUsed, cleanUrl, finished) {
   const badge = document.getElementById('friendStatusBadge');
   const title = document.getElementById('friendTitle');
   const content = document.getElementById('friendContent');
+
+  if (finished) {
+    badge.className = 'status-badge ok';
+    badge.textContent = 'CONVITE CONCLUÍDO';
+    title.textContent = 'Missão Cumprida!';
+    content.innerHTML = `
+      <div class="notice success">
+        🎉 <strong>Este convite já foi 100% concluído!</strong><br>
+        Tanto você quanto ${t.inviterName} já realizaram o corte com 50% de desconto na Fartir.
+      </div>
+    `;
+    return;
+  }
 
   if (expired) {
     badge.className = 'status-badge red';
@@ -889,7 +895,7 @@ function renderFriend(t, expired, friendUsed, cleanUrl) {
   if (friendUsed) {
     badge.className = 'status-badge red';
     badge.textContent = 'VAGA DE AMIGO ESGOTADA';
-    title.textContent = 'Convite já utilizado';
+    title.textContent = 'Vaga já utilizada';
     content.innerHTML = `
       <div class="notice warning">
         <strong>A vaga deste convite já foi preenchida:</strong> o amigo <strong>${t.friendName || 'indicado'}</strong> já realizou o corte e garantiu o desconto. Como o convite dá direito a apenas 1 amigo com desconto, esta vaga não está mais disponível.
@@ -912,7 +918,7 @@ function renderFriend(t, expired, friendUsed, cleanUrl) {
   `;
 
   document.getElementById('friendBookBtn').onclick = () => {
-    const msg = `Fala Matheus! Recebi o convite do ${t.inviterName} (Link: ${cleanUrl}) e quero agendar meu corte com 50% de desconto! Quais horários você tem disponíveis?`;
+    const msg = `Fala Matheus! Recebi o convite do ${t.inviterName} (Link: ${cleanUrl}#amigo) e quero agendar meu corte com 50% de desconto! Quais horários você tem disponíveis?`;
     openWhatsApp(FARTIR_CONFIG.OWNER_PHONE, msg);
   };
 }
@@ -987,7 +993,7 @@ function renderOwner(t, expired, friendUsed, inviterUsed) {
             {
               label: 'AVISAR ' + t.inviterName.toUpperCase() + ' NO WHATSAPP ↗',
               onClick: () => {
-                const msg = `Fala ${t.inviterName}! Seu amigo ${name || 'indicado'} acabou de cortar o cabelo aqui na Fartir. O seu corte de 50% de desconto (R$ 20) está liberado! Quando quer agendar o seu?`;
+                const msg = `Fala ${t.inviterName}! Seu amigo ${name || 'indicado'} acabou de cortar o cabelo aqui comigo. O seu corte de 50% de desconto (R$ 20) está liberado! Quando quer agendar o seu?`;
                 openWhatsApp(t.inviterPhone, msg);
               }
             },
@@ -1003,7 +1009,7 @@ function renderOwner(t, expired, friendUsed, inviterUsed) {
   const notifyInviterBtn = document.getElementById('notifyInviterBtn');
   if (notifyInviterBtn) {
     notifyInviterBtn.onclick = () => {
-      const msg = `Fala ${t.inviterName}! Seu amigo ${t.friendName || 'indicado'} já cortou o cabelo aqui na Fartir. O seu corte de 50% de desconto (R$ 20) está liberado! Quando quer vir cortar?`;
+      const msg = `Fala ${t.inviterName}! Seu amigo ${t.friendName || 'indicado'} acabou de cortar o cabelo aqui comigo. O seu corte de 50% de desconto (R$ 20) está liberado! Quando quer vir cortar?`;
       openWhatsApp(t.inviterPhone, msg);
     };
   }
@@ -1026,6 +1032,9 @@ function renderOwner(t, expired, friendUsed, inviterUsed) {
     };
   }
 }
+
+// Ouve mudanças de hash para alternar em tempo real se necessário
+window.addEventListener('hashchange', renderPage);
 
 // Inicia
 setInterval(updateClockOnly, 1000);
