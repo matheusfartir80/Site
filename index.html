@@ -273,6 +273,9 @@ img{display:block;max-width:100%}
 .final h2 .q{color:var(--red)}
 .final-ctas{display:flex;flex-wrap:wrap;gap:16px;margin-top:clamp(36px,4vw,60px)}
 .big-cta{display:inline-flex;align-items:center;gap:22px;padding:clamp(20px,2vw,28px) clamp(26px,2.6vw,40px);background:var(--red);font:700 clamp(16px,1.4vw,22px)/1 var(--f-display);text-transform:uppercase;letter-spacing:.05em;position:relative;overflow:hidden;isolation:isolate;transition:color .45s}
+.big-cta.big-cta-outline{background:transparent;border:1px solid var(--ink);color:var(--ink)}
+.big-cta.big-cta-outline::before{background:var(--red)}
+.big-cta.big-cta-outline:hover{color:var(--ink);border-color:var(--red)}
 .big-cta.big-cta-orc{background:transparent;border:1px solid var(--ink);color:var(--ink)}
 .big-cta.big-cta-orc::before{background:var(--red)}
 .big-cta.big-cta-orc:hover{color:var(--ink);border-color:var(--red)}
@@ -833,9 +836,9 @@ footer{position:relative;overflow:hidden;padding:0 var(--pad) 28px}
     <div>
       <h2 class="reveal" id="final-title">Pronto para elevar<br>o seu visual?</h2>
       <div class="final-ctas reveal">
-        <a class="big-cta" data-zap><span data-t="BOTAO">Agende por aqui</span>
+        <a class="big-cta big-cta-outline" data-zap><span data-t="BOTAO">Agende por aqui</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h17M14 6l6 6-6 6"/></svg></a>
-        <a href="orcamento.html" data-orcamento class="big-cta big-cta-orc"><span>Orçamento Online</span>
+        <a href="orcamento.html" data-orcamento class="big-cta"><span>Orçamento Online</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12h17M14 6l6 6-6 6"/></svg></a>
       </div>
       <div class="phone reveal">WhatsApp · <b data-phone>(31) 99381-1525</b></div>
