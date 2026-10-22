@@ -219,7 +219,11 @@ a { color: inherit; text-decoration: none; }
   width: 0%;
   background: var(--red);
   box-shadow: 0 0 12px var(--red);
-  transition: width 0.35s var(--ease);
+  transition: width 0.35s var(--ease), background 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+.progress-fill.full {
+  background: #25D366;
+  box-shadow: 0 0 12px #25D366;
 }
 
 /* Painéis de perguntas */
@@ -775,7 +779,14 @@ function render() {
   const m = money(a, b);
   el('price').textContent = m;
   el('time').textContent = `⏱ ~${estimateMinutes()} min`;
-  el('progress').style.width = `${progressPercent()}%`;
+  const pct = progressPercent();
+  const progEl = el('progress');
+  progEl.style.width = `${pct}%`;
+  if (pct >= 100) {
+    progEl.classList.add('full');
+  } else {
+    progEl.classList.remove('full');
+  }
   document.querySelectorAll('[data-price]').forEach(e => e.textContent = m);
 
   el('pricehint').textContent = !s.service
@@ -862,7 +873,7 @@ el('finish').addEventListener('click', () => {
 
   el('result').innerHTML = `
     <i class="mc tl"></i><i class="mc tr"></i><i class="mc bl"></i><i class="mc br"></i>
-    <div style="font-size:26px;color:var(--red)">✂</div>
+    <div style="font-size:26px;color:var(--ink)">✂</div>
     <h2>Orçamento pronto</h2>
     <div class="price">${finalPriceDisplay}</div>
     <div class="meta">⏱ Tempo médio estimado: ~${mins} minutos</div>
@@ -894,5 +905,8 @@ render();
 </script>
 </body>
 </html>
+
+
+
 
 
