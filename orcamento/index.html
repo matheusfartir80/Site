@@ -363,8 +363,8 @@ label.extra:hover {
   border-color: rgba(236, 228, 212, 0.45);
 }
 label.extra:has(input:checked) {
-  background: rgba(211, 20, 29, 0.15);
-  border-color: var(--red);
+  background: rgba(37, 211, 102, 0.12);
+  border-color: #25D366;
 }
 .extra-left {
   display: flex;
@@ -376,13 +376,13 @@ label.extra:has(input:checked) {
 }
 label.extra b {
   font: 600 12px/1 var(--f-mono);
-  color: var(--red);
+  color: var(--ink);
 }
 label.extra:has(input:checked) b {
   color: var(--ink);
 }
 input[type=checkbox] {
-  accent-color: var(--red);
+  accent-color: #25D366;
   width: 18px;
   height: 18px;
   margin: 0;
@@ -428,7 +428,7 @@ input[type=checkbox] {
 .result {
   position: relative;
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(211, 20, 29, 0.22), transparent 65%),
+    radial-gradient(ellipse at 50% 0%, rgba(37, 211, 102, 0.22), transparent 65%),
     #111110;
   padding: 28px 22px;
   border: 1px solid rgba(236, 228, 212, 0.28);
@@ -894,4 +894,5 @@ render();
 </script>
 </body>
 </html>
+
 
