@@ -490,7 +490,7 @@
     </div>
     <div class="hero-brush" id="heroBrush">Indicou. Ganhou.</div>
     <p class="hero-desc" id="heroDesc">
-      Dois cortes pela metade do preço. Compartilhe seu convite com um amigo: o primeiro a cortar paga R$ 20 e libera R$ 20 para você também!
+      Dois cortes pela metade do preço. Compartilhe com seus amigos, o primeiro que agendar e cortar ganha 50% de desconto e automaticamente libera o seu desconto também.
     </p>
   </section>
 
@@ -658,7 +658,11 @@ function updateClockOnly() {
 async function renderPage() {
   if (window.location.search && window.location.search.includes('c=')) {
     try {
-      window.history.replaceState(null, '', window.location.pathname + window.location.hash);
+      if (window.location.pathname.includes('/pass')) {
+        window.history.replaceState(null, '', '/' + currentSlug + '/' + window.location.hash);
+      } else {
+        window.history.replaceState(null, '', window.location.pathname + window.location.hash);
+      }
     } catch (e) {}
   }
 
@@ -746,7 +750,7 @@ async function renderPage() {
     document.getElementById('inviterNameDisplay').textContent = t.inviterName.toUpperCase();
     document.getElementById('heroTagline').textContent = 'VOCÊ GANHOU 50% DE DESCONTO';
     document.getElementById('heroBrush').textContent = 'Indicou. Ganhou.';
-    document.getElementById('heroDesc').textContent = 'Dois cortes pela metade do preço. Compartilhe seu convite com um amigo: o primeiro a cortar paga R$ 20 e libera R$ 20 para você também!';
+    document.getElementById('heroDesc').textContent = 'Dois cortes pela metade do preço. Compartilhe com seus amigos, o primeiro que agendar e cortar ganha 50% de desconto e automaticamente libera o seu desconto também.';
 
     renderInviter(t, expired, friendUsed, inviterUsed, cleanUrl, finished);
   }
@@ -824,7 +828,7 @@ function renderInviter(t, expired, friendUsed, inviterUsed, cleanUrl, finished) 
     badge.textContent = 'CONVITE DISPONÍVEL';
     title.textContent = `Olá, ${t.inviterName}!`;
     content.innerHTML = `
-      <p>Você ganhou este convite exclusivo da Fartir! Ao participar, você libera seu link especial para indicar um amigo: <strong>quando ele cortar por R$ 20, o seu corte também sai por R$ 20!</strong></p>
+      <p>Você ganhou este convite exclusivo do Matheus! Ao participar, você libera seu link especial para indicar um amigo: <strong>quando ele agendar e cortar com 50% de desconto, automaticamente libera o seu desconto também!</strong></p>
       <button class="btn whatsapp" id="participateBtn" style="font-size:14px; padding:16px;">
         PARTICIPAR E LIBERAR MEU CONVITE →
       </button>
@@ -844,16 +848,16 @@ function renderInviter(t, expired, friendUsed, inviterUsed, cleanUrl, finished) 
 
   badge.className = 'status-badge ok';
   badge.textContent = 'ATIVO · COMPARTILHE E GANHE';
-  title.textContent = `${t.inviterName}, compartilhe com um amigo!`;
+  title.textContent = `${t.inviterName}, compartilhe com seus amigos!`;
   content.innerHTML = `
-    <p>Envie o link abaixo para seus amigos. <strong>O primeiro que agendar e cortar paga R$ 20</strong> e destrava o mesmo valor de R$ 20 para você!</p>
+    <p>Envie o link abaixo para seus amigos. <strong>O primeiro que agendar e cortar ganha 50% de desconto</strong> e automaticamente libera o seu desconto também!</p>
     <div class="btn-row">
       <button class="btn whatsapp" id="shareWaBtn">ENVIAR CONVITE NO WHATSAPP ↗</button>
       <button class="btn secondary" id="copyLinkBtn">COPIAR LINK</button>
     </div>
   `;
 
-  // Mensagem exata pedida com "você"
+  // Mensagem exata com "você"
   const friendLink = `${cleanUrl}#amigo`;
   const shareText = `Fala! Consegui um convite exclusivo para você cortar cabelo com 50% de desconto (de R$ 40 por R$ 20).\n\nAcesse aqui para garantir a vaga: ${friendLink}`;
 
@@ -909,7 +913,7 @@ function renderFriend(t, expired, friendUsed, cleanUrl, finished) {
   badge.textContent = '1 VAGA DISPONÍVEL';
   title.textContent = `Convite de ${t.inviterName}!`;
   content.innerHTML = `
-    <p>Você recebeu a chance de cortar seu cabelo com Matheus no Laboratório de Cortes FARTIR por <strong>apenas R$ 20</strong> (metade do preço!).</p>
+    <p>Você recebeu um corte de cabelo com Matheus por 50% de desconto.</p>
     <div class="notice info">
       ⚡ <strong>Atenção:</strong> Cada convite possui apenas <strong>1 vaga</strong> para amigo. O desconto fica garantido para o primeiro que agendar e comparecer!
     </div>
@@ -1010,7 +1014,7 @@ function renderOwner(t, expired, friendUsed, inviterUsed) {
   const notifyInviterBtn = document.getElementById('notifyInviterBtn');
   if (notifyInviterBtn) {
     notifyInviterBtn.onclick = () => {
-      const msg = `Fala ${t.inviterName}! Seu amigo ${t.friendName || 'indicado'} acabou de cortar o cabelo aqui comigo. O seu corte de 50% de desconto (R$ 20) está liberado! Quando quer vir cortar?`;
+      const msg = `Fala ${t.inviterName}! Seu amigo ${t.friendName || 'indicado'} já cortou o cabelo aqui comigo. O seu corte de 50% de desconto (R$ 20) está liberado! Quando quer vir cortar?`;
       openWhatsApp(t.inviterPhone, msg);
     };
   }

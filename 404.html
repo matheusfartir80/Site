@@ -4,20 +4,20 @@
   <meta charset="utf-8">
   <title>Fartir · Redirecionando...</title>
   <script>
-    // GitHub Pages SPA Router:
-    // Se a rota for /convite1, /convite2, /admin, redireciona para a pasta correspondente
+    // GitHub Pages SPA Router
     var pathname = window.location.pathname.replace(/^\/+/, '').replace(/\/+$/, '');
     var parts = pathname.split('/');
     var firstSegment = parts[0] || '';
+    var hash = window.location.hash || '';
 
     if (firstSegment.indexOf('convite') === 0) {
-      window.location.replace('/pass/?c=' + encodeURIComponent(firstSegment));
+      window.location.replace('/pass/?c=' + encodeURIComponent(firstSegment) + hash);
     } else if (firstSegment === 'admin') {
-      window.location.replace('/admin/');
+      window.location.replace('/admin/' + hash);
     } else if (firstSegment === 'orcamento') {
-      window.location.replace('/orcamento/');
+      window.location.replace('/orcamento/' + hash);
     } else {
-      window.location.replace('/');
+      window.location.replace('/' + hash);
     }
   </script>
 </head>
