@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Fartir Cut — Seu trabalho merece sair da galeria.</title>
+  <meta name="description" content="O aplicativo seleciona trechos de barbearia. Você revisa, ajusta e salva.">
+  <meta name="theme-color" content="#090909">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="cut-style.css">
+  <link rel="stylesheet" href="cut-motion.css">
+</head>
+<body data-page="home">
+
+  <header class="minibar">
+    <div class="mb-brand">
+      <a href="./" data-i18n-aria="aria_logo" aria-label="Página inicial do Fartir Cut">
+        <img class="mb-logo" src="logo-fartir-cut.png" alt="Fartir Cut">
+      </a>
+    </div>
+
+    <nav class="mb-nav" data-i18n-aria="aria_nav" aria-label="Navegação principal">
+      <a href="#vantagens" data-i18n="nav_perks">Vantagens</a>
+      <a href="#como-funciona" data-i18n="nav_how">Como funciona</a>
+      <a href="#ajuda" data-i18n="nav_help">Dúvidas</a>
+    </nav>
+
+    <div class="mb-r">
+      <div class="lang-picker">
+        <svg class="lang-picker-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        <span class="lang-picker-code" data-lang-code>PT</span>
+        <svg class="lang-picker-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+        <select class="lang-select" data-lang-select data-i18n-aria="aria_lang" aria-label="Selecionar idioma">
+          <option value="pt-BR">Português</option>
+          <option value="en">English</option>
+          <option value="es">Español</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+          <option value="it">Italiano</option>
+          <option value="ru">Русский</option>
+          <option value="tr">Türkçe</option>
+          <option value="ar">العربية</option>
+          <option value="hi">हिन्दी</option>
+          <option value="ja">日本語</option>
+          <option value="ko">한국어</option>
+          <option value="zh-CN">简体中文</option>
+          <option value="id">Bahasa Indonesia</option>
+        </select>
+      </div>
+      <a class="mb-cta" data-role="nav-primary" href="#como-funciona">
+        <span data-btn-label>Como funciona</span>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <!-- CENA A & B: HERO + VANTAGENS + DOIS CELULARES -->
+    <section class="hero" id="vantagens" data-motion-scene="hero">
+      <div class="wrap">
+        <div class="hero-grid">
+          <div class="hero-copy" data-hero-copy>
+            <div class="hero-badge">
+              <svg class="badge-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/>
+                <line x1="20" y1="4" x2="8.12" y2="15.88"/>
+                <line x1="14.47" y1="14.48" x2="20" y2="20"/>
+                <line x1="8.12" y1="8.12" x2="12" y2="12"/>
+              </svg>
+              <span data-i18n="hero_badge">Melhores momentos</span>
+            </div>
+
+            <!-- Wrapper externo para não conflitar com aplicarIdioma() em [data-role="hero-hl-title"] -->
+            <div class="hero-title-wrap" data-hero-title-wrap>
+              <div class="hero-playhead-origin" aria-hidden="true" dir="ltr">
+                <span class="hpo-head"></span>
+                <span class="hpo-line"><span class="hpo-line-fill" data-hero-origin-fill></span></span>
+                <span class="hpo-tc">00:00:00</span>
+              </div>
+              <h1 class="hero-title" data-role="hero-hl-title">
+                Você grava por <span class="hl">1 hora</span> e resolve em <span class="hl">1 minuto</span>
+              </h1>
+            </div>
+
+            <p class="hero-sub" data-i18n="hero_sub">O aplicativo seleciona trechos de barbearia. Você revisa, ajusta e salva.</p>
+            <p class="hero-note" data-i18n="hero_speed_note">O tempo pode variar dependendo do celular</p>
+          </div>
+
+          <!-- CENA B: TRÊS VANTAGENS (SOMENTE ÍCONE À ESQUERDA + TEXTO) -->
+          <div class="hero-perks" data-motion-scene="perks">
+            <div class="perk-row" data-perk-card="1">
+              <div class="perk-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M6 9v6M10 9v6M6 12h4M13 9h2a3 3 0 0 1 0 6h-2z"/></svg>
+              </div>
+              <div class="perk-copy">
+                <div class="perk-title" data-i18n="perk_1_title">Não comprime o vídeo</div>
+                <div class="perk-desc" data-i18n="perk_1_desc">Você salva sem comprimir o vídeo final</div>
+              </div>
+            </div>
+
+            <div class="perk-row" data-perk-card="2">
+              <div class="perk-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v6c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 11v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg>
+              </div>
+              <div class="perk-copy">
+                <div class="perk-title" data-i18n="perk_2_title">Seleção automática</div>
+                <div class="perk-desc" data-i18n="perk_2_desc">O app seleciona os momentos mais importantes e você pode revisar rapidamente</div>
+              </div>
+            </div>
+
+            <div class="perk-row" data-perk-card="3">
+              <div class="perk-ico" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 8.82a15 15 0 0 1 20 0M5 12.86a10 10 0 0 1 14 0M8.5 16.43a5 5 0 0 1 7 0M12 20h.01M2 2l20 20"/></svg>
+              </div>
+              <div class="perk-copy">
+                <div class="perk-title" data-i18n="perk_3_title">Funciona offline</div>
+                <div class="perk-desc" data-i18n="perk_3_desc">Edite e adicione música no celular a qualquer hora sem internet.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- DOIS CELULARES (ANTES -> DEPOIS) -->
+          <div class="hero-phones" data-hero-phones>
+            <div class="phones-showcase" data-phones-showcase>
+              <!-- Wrapper próprio para mover o celular 1 sem sobrescrever transform da moldura -->
+              <div class="phone-mover is-before" data-phone-mover="before">
+                <div class="phone-frame is-phone-before">
+                  <div class="phone-inner">
+                    <div class="phone-notch"></div>
+                    <img class="phone-before-photo" src="barbeiro-hero.jpg" data-i18n-alt="phone_before_alt" alt="Gravação completa do corte de cabelo">
+                    <div class="phone-top-pill">
+                      <svg class="phone-cam-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m16 10 5-3v10l-5-3z"/><rect x="3" y="7" width="13" height="10" rx="2"/></svg>
+                      <div class="phone-top-pill-txt">
+                        <span data-i18n="phone_before_label">Vídeo original</span>
+                        <strong data-i18n="phone_before_dur">1 hora</strong>
+                      </div>
+                    </div>
+
+                    <!-- Faixa decorativa de miniaturas contínuas percorrida pelo playhead no scroll -->
+                    <div class="hero-raw-strip" aria-hidden="true" dir="ltr" data-hero-raw-strip>
+                      <div class="hrs-track">
+                        <div class="hrs-seg is-pick" data-hrs-pick="0">
+                          <img src="../fotos/corte-1.jpg" alt="" decoding="async">
+                        </div>
+                        <div class="hrs-seg is-pick" data-hrs-pick="1">
+                          <img src="../fotos/corte-2.jpg" alt="" decoding="async">
+                        </div>
+                        <div class="hrs-seg is-pick" data-hrs-pick="2">
+                          <img src="../fotos/corte-3.jpg" alt="" decoding="async">
+                        </div>
+                        <div class="hrs-seg is-pick" data-hrs-pick="3">
+                          <img src="../fotos/corte-4.jpg" alt="" decoding="async">
+                        </div>
+                        <div class="hrs-seg is-pick" data-hrs-pick="4">
+                          <img src="../fotos/corte-5.jpg" alt="" decoding="async">
+                        </div>
+                        <div class="hrs-playhead" data-hero-playhead></div>
+                      </div>
+                    </div>
+
+                    <div class="phone-bar-overlay" dir="ltr">
+                      <span class="phone-play-mini" aria-hidden="true">▶</span>
+                      <div class="phone-progress"><span class="phone-progress-fill" data-hero-progress-fill></span></div>
+                      <span class="phone-time">1:00:00</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Traço curto vermelho que une origem e seleção -->
+              <div class="phone-arrow" aria-hidden="true" data-phone-bridge>
+                <span class="phone-arrow-glyph">→</span>
+                <span class="phone-bridge-track">
+                  <span class="phone-bridge-fill" data-phone-bridge-fill></span>
+                  <span class="phone-bridge-dot" data-phone-bridge-dot></span>
+                </span>
+              </div>
+
+              <!-- Wrapper próprio para mover o celular 2 -->
+              <div class="phone-mover is-after" data-phone-mover="after">
+                <div class="phone-frame is-phone-after">
+                  <div class="phone-inner">
+                    <div class="phone-notch"></div>
+                    <div class="phone-after-body">
+                      <div class="take-list" data-hero-take-list>
+                        <div class="take-item" data-hero-take="0">
+                          <div class="take-thumb">
+                            <img src="../fotos/corte-5.jpg" data-i18n-alt="phone_clip_alt" alt="Trecho selecionado">
+                            <span class="take-thumb-play" aria-hidden="true">▶</span>
+                          </div>
+                          <div class="take-info">
+                            <div class="take-time" dir="ltr">0:05</div>
+                            <div class="take-wave" aria-hidden="true"><span style="width:84%"></span></div>
+                          </div>
+                          <span class="take-dots" aria-hidden="true">⋮</span>
+                        </div>
+                        <div class="take-item" data-hero-take="1">
+                          <div class="take-thumb">
+                            <img src="../fotos/corte-3.jpg" data-i18n-alt="phone_clip_alt" alt="Trecho selecionado">
+                            <span class="take-thumb-play" aria-hidden="true">▶</span>
+                          </div>
+                          <div class="take-info">
+                            <div class="take-time" dir="ltr">0:02</div>
+                            <div class="take-wave" aria-hidden="true"><span style="width:46%"></span></div>
+                          </div>
+                          <span class="take-dots" aria-hidden="true">⋮</span>
+                        </div>
+                        <div class="take-item" data-hero-take="2">
+                          <div class="take-thumb">
+                            <img src="../fotos/corte-2.jpg" data-i18n-alt="phone_clip_alt" alt="Trecho selecionado">
+                            <span class="take-thumb-play" aria-hidden="true">▶</span>
+                          </div>
+                          <div class="take-info">
+                            <div class="take-time" dir="ltr">0:04</div>
+                            <div class="take-wave" aria-hidden="true"><span style="width:72%"></span></div>
+                          </div>
+                          <span class="take-dots" aria-hidden="true">⋮</span>
+                        </div>
+                        <div class="take-item" data-hero-take="3">
+                          <div class="take-thumb">
+                            <img src="../fotos/corte-4.jpg" data-i18n-alt="phone_clip_alt" alt="Trecho selecionado">
+                            <span class="take-thumb-play" aria-hidden="true">▶</span>
+                          </div>
+                          <div class="take-info">
+                            <div class="take-time" dir="ltr">0:03</div>
+                            <div class="take-wave" aria-hidden="true"><span style="width:58%"></span></div>
+                          </div>
+                          <span class="take-dots" aria-hidden="true">⋮</span>
+                        </div>
+                        <div class="take-item" data-hero-take="4">
+                          <div class="take-thumb">
+                            <img src="../fotos/corte-1.jpg" data-i18n-alt="phone_clip_alt" alt="Trecho selecionado">
+                            <span class="take-thumb-play" aria-hidden="true">▶</span>
+                          </div>
+                          <div class="take-info">
+                            <div class="take-time" dir="ltr">0:04</div>
+                            <div class="take-wave" aria-hidden="true"><span style="width:76%"></span></div>
+                          </div>
+                          <span class="take-dots" aria-hidden="true">⋮</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="phones-caption" data-i18n="phones_caption">Ilustração da seleção automática de trechos.</p>
+          </div>
+
+          <!-- CTA CENTRALIZADO EMBAIXO -->
+          <div class="hero-cta-area">
+            <a class="btn-primary" data-role="download-btn" href="https://wa.me/5531993811525?text=Ol%C3%A1!%20Quero%20saber%20sobre%20o%20lan%C3%A7amento%20do%20Fartir%20Cut%20para%20Android." target="_blank" rel="noopener">
+              <svg class="btn-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg>
+              <span data-btn-label>Saber do lançamento</span>
+            </a>
+            <p class="launch-status" data-role="trial-status">Status atual: em preparação para publicação na Google Play.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CENA C: A MESA DE EDIÇÃO (COMO FUNCIONA) -->
+    <section class="sec alt" id="como-funciona" data-motion-scene="workbench">
+      <div class="wrap">
+        <div class="how-scene-track" data-wb-track>
+          <div class="how-narrative-col">
+            <div class="sec-head">
+              <div class="sec-kicker" data-i18n="sec_how_kicker">Como funciona</div>
+              <h2 data-i18n="sec_how_title">Do corte completo ao vídeo pronto</h2>
+              <p data-i18n="sec_how_sub">Três passos diretos no celular.</p>
+            </div>
+
+            <div class="steps-rail-wrap">
+              <!-- Linha vermelha lateral que liga as etapas no celular e no desktop -->
+              <div class="steps-red-rail" aria-hidden="true">
+                <span class="steps-red-rail-fill" data-steps-rail-fill></span>
+                <span class="steps-red-rail-head" data-steps-rail-head></span>
+              </div>
+
+              <div class="steps-grid" data-steps-grid>
+                <article class="step-card is-active" data-step-card="0">
+                  <div class="step-card-top">
+                    <div class="step-num">1</div>
+                    <span class="step-tc" aria-hidden="true" dir="ltr">00:00 — 01:00:00</span>
+                  </div>
+                  <h3 data-i18n="step_1_title">Escolha o vídeo original</h3>
+                  <p data-i18n="step_1_desc">Selecione a gravação do corte salva no seu aparelho.</p>
+
+                  <!-- Estado visual compacto para mobile / fluxo compacto -->
+                  <div class="step-mobile-stage" aria-hidden="true" dir="ltr" data-mobile-stage="0">
+                    <div class="sms-header">
+                      <span class="sms-dot"></span>
+                      <span class="sms-tag">RAW · VÍDEO ORIGINAL</span>
+                      <span class="sms-dur">01:00:00</span>
+                    </div>
+                    <div class="sms-raw-bar">
+                      <div class="sms-raw-thumbs">
+                        <img src="midia/s1-1.jpg" alt="" decoding="async">
+                        <img src="midia/s1-2.jpg" alt="" decoding="async">
+                        <img src="midia/s1-3.jpg" alt="" decoding="async">
+                        <img src="midia/s1-4.jpg" alt="" decoding="async">
+                        <img src="midia/s1-5.jpg" alt="" decoding="async">
+                      </div>
+                      <span class="sms-playhead is-step-1" data-sms-playhead="0"></span>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="step-card" data-step-card="1">
+                  <div class="step-card-top">
+                    <div class="step-num">2</div>
+                    <span class="step-tc" aria-hidden="true" dir="ltr">20 CLIPS</span>
+                  </div>
+                  <h3 data-i18n="step_2_title">Revise os trechos</h3>
+                  <p data-i18n="step_2_desc">Veja a sequência selecionada, ajuste pontas ou adicione música.</p>
+
+                  <!-- Estado visual compacto 2: seleção + recuo dos intervalos vazios -->
+                  <div class="step-mobile-stage" aria-hidden="true" dir="ltr" data-mobile-stage="1">
+                    <div class="sms-header">
+                      <span class="sms-dot"></span>
+                      <span class="sms-tag">SELEÇÃO + AJUSTE</span>
+                      <span class="sms-dur">20 TRECHOS</span>
+                    </div>
+                    <div class="sms-select-bar">
+                      <span class="sms-clip is-selected"><img src="midia/s2-1.jpg" alt="" decoding="async"><i>0:05</i></span>
+                      <span class="sms-gap"></span>
+                      <span class="sms-clip is-selected is-trimmed"><img src="midia/s2-2.jpg" alt="" decoding="async"><i>0:02</i></span>
+                      <span class="sms-gap"></span>
+                      <span class="sms-clip is-selected"><img src="midia/s2-3.jpg" alt="" decoding="async"><i>0:04</i></span>
+                      <span class="sms-gap"></span>
+                      <span class="sms-clip is-selected"><img src="midia/s2-4.jpg" alt="" decoding="async"><i>0:03</i></span>
+                      <span class="sms-clip is-selected"><img src="midia/s2-5.jpg" alt="" decoding="async"><i>0:04</i></span>
+                      <span class="sms-playhead is-step-2" data-sms-playhead="1"></span>
+                    </div>
+                  </div>
+                </article>
+
+                <article class="step-card" data-step-card="2">
+                  <div class="step-card-top">
+                    <div class="step-num">3</div>
+                    <span class="step-tc" aria-hidden="true" dir="ltr">0:39</span>
+                  </div>
+                  <h3 data-i18n="step_3_title">Salve sem perder nitidez</h3>
+                  <p data-i18n="step_3_desc">Nos cortes compatíveis, a imagem original é mantida sem compressão.</p>
+
+                  <!-- Estado visual compacto 3: sequência agrupada sem vazios -->
+                  <div class="step-mobile-stage" aria-hidden="true" dir="ltr" data-mobile-stage="2">
+                    <div class="sms-header">
+                      <span class="sms-dot is-ready"></span>
+                      <span class="sms-tag">SEQUÊNCIA PRONTA</span>
+                      <span class="sms-dur">0:39</span>
+                    </div>
+                    <div class="sms-packed-bar">
+                      <span class="sms-pack-seg"><img src="midia/s3-1.jpg" alt="" decoding="async"><b>0:05</b></span>
+                      <span class="sms-pack-seg"><img src="midia/s3-2.jpg" alt="" decoding="async"><b>0:02</b></span>
+                      <span class="sms-pack-seg"><img src="midia/s3-3.jpg" alt="" decoding="async"><b>0:04</b></span>
+                      <span class="sms-pack-seg"><img src="midia/s3-4.jpg" alt="" decoding="async"><b>0:03</b></span>
+                      <span class="sms-pack-seg"><img src="midia/s3-5.jpg" alt="" decoding="async"><b>0:04</b></span>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+
+            <p class="quality-note" data-i18n="quality_note">Adicionar música processa apenas o áudio; filtros, transições e outras mudanças visuais exigem renderização dos trechos alterados.</p>
+          </div>
+
+          <!-- PALCO STICKY DESKTOP: MESA DE EDIÇÃO -->
+          <div class="how-workbench-col" aria-hidden="true">
+            <div class="how-workbench-sticky" data-wb-sticky>
+              <div class="wb-surface" data-wb-surface>
+                <!-- Barra superior de estado da mesa -->
+                <div class="wb-topbar">
+                  <div class="wb-phase-pill">
+                    <span class="wb-phase-dot" data-wb-dot></span>
+                    <span class="wb-phase-num" dir="ltr" data-wb-phase-num>01 / 03</span>
+                    <span class="wb-phase-label" data-wb-phase-label>Escolha o vídeo original</span>
+                  </div>
+                  <div class="wb-meta-readout" dir="ltr">
+                    <span class="wb-format-badge">1080P 60FPS</span>
+                    <span class="wb-timecode" data-wb-timecode>01:00:00</span>
+                  </div>
+                </div>
+
+                <!-- Monitor central: celular + lista de sequência emergente -->
+                <div class="wb-monitor-bay">
+                  <div class="wb-phone-stage" data-wb-phone>
+                    <div class="wb-phone-frame">
+                      <div class="wb-phone-notch"></div>
+                      <div class="wb-phone-screen">
+                        <img class="wb-screen-img is-img-0" src="midia/s1-1.jpg" alt="" decoding="async" data-wb-screen="0">
+                        <img class="wb-screen-img is-img-1" src="midia/s2-3.jpg" alt="" decoding="async" data-wb-screen="1">
+                        <img class="wb-screen-img is-img-2" src="midia/s2-4.jpg" alt="" decoding="async" data-wb-screen="2">
+                        <img class="wb-screen-img is-img-3" src="midia/s3-5.jpg" alt="" decoding="async" data-wb-screen="3">
+                        <div class="wb-screen-crop" data-wb-crop>
+                          <i></i><i></i><i></i><i></i>
+                        </div>
+                        <div class="wb-screen-hud" dir="ltr">
+                          <span class="wb-hud-rec" data-wb-hud-tag>RAW · 1:00:00</span>
+                          <span class="wb-hud-clip" data-wb-hud-clip>#01 · 0:05</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Painel de sequência dos trechos -->
+                  <div class="wb-sequence-panel">
+                    <div class="wb-seq-head">
+                      <span data-i18n="phone_after_title">Melhores momentos</span>
+                      <strong dir="ltr" data-wb-seq-summary>20 CLIPS · 0:39</strong>
+                    </div>
+                    <div class="wb-seq-slots" dir="ltr">
+                      <div class="wb-seq-row" data-wb-slot="0">
+                        <span class="wb-slot-idx">01</span>
+                        <span class="wb-slot-thumb"><img src="midia/s1-1.jpg" alt="" decoding="async"></span>
+                        <span class="wb-slot-bar"><i style="width:84%"></i></span>
+                        <span class="wb-slot-tc">0:05</span>
+                      </div>
+                      <div class="wb-seq-row" data-wb-slot="1">
+                        <span class="wb-slot-idx">02</span>
+                        <span class="wb-slot-thumb"><img src="midia/s2-3.jpg" alt="" decoding="async"></span>
+                        <span class="wb-slot-bar"><i style="width:48%"></i></span>
+                        <span class="wb-slot-tc">0:02</span>
+                      </div>
+                      <div class="wb-seq-row" data-wb-slot="2">
+                        <span class="wb-slot-idx">03</span>
+                        <span class="wb-slot-thumb"><img src="midia/s2-4.jpg" alt="" decoding="async"></span>
+                        <span class="wb-slot-bar"><i style="width:74%"></i></span>
+                        <span class="wb-slot-tc" data-wb-trim-tc>0:04</span>
+                      </div>
+                      <div class="wb-seq-row" data-wb-slot="3">
+                        <span class="wb-slot-idx">04</span>
+                        <span class="wb-slot-thumb"><img src="midia/s3-2.jpg" alt="" decoding="async"></span>
+                        <span class="wb-slot-bar"><i style="width:60%"></i></span>
+                        <span class="wb-slot-tc">0:03</span>
+                      </div>
+                      <div class="wb-seq-row" data-wb-slot="4">
+                        <span class="wb-slot-idx">05</span>
+                        <span class="wb-slot-thumb"><img src="midia/s3-5.jpg" alt="" decoding="async"></span>
+                        <span class="wb-slot-bar"><i style="width:78%"></i></span>
+                        <span class="wb-slot-tc">0:04</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Deck da Timeline (Assinatura: o vazio desaparece e a sequência emerge) -->
+                <div class="wb-timeline-deck" dir="ltr">
+                  <div class="wb-ruler">
+                    <span>00:00</span>
+                    <span>00:15</span>
+                    <span>00:30</span>
+                    <span>00:45</span>
+                    <span>01:00:00</span>
+                  </div>
+
+                  <div class="wb-track-viewport" data-wb-viewport>
+                    <div class="wb-track-lane" data-wb-lane>
+                      <!-- 5 trechos selecionados intercalados com 4 intervalos não selecionados -->
+                      <div class="wb-seg is-clip" data-wb-clip="0" style="left:0%;width:13%">
+                        <img src="midia/s1-1.jpg" alt="" decoding="async">
+                        <span class="wb-seg-tc">0:05</span>
+                        <span class="wb-handle is-l"></span>
+                        <span class="wb-handle is-r"></span>
+                      </div>
+
+                      <div class="wb-seg is-gap" data-wb-gap="0" style="left:13%;width:9.5%">
+                        <span class="wb-gap-hatch"></span>
+                      </div>
+
+                      <div class="wb-seg is-clip" data-wb-clip="1" style="left:22.5%;width:11.5%">
+                        <img src="midia/s2-3.jpg" alt="" decoding="async">
+                        <span class="wb-seg-tc">0:02</span>
+                        <span class="wb-handle is-l"></span>
+                        <span class="wb-handle is-r"></span>
+                      </div>
+
+                      <div class="wb-seg is-gap" data-wb-gap="1" style="left:34%;width:9.5%">
+                        <span class="wb-gap-hatch"></span>
+                      </div>
+
+                      <div class="wb-seg is-clip is-trim-target" data-wb-clip="2" style="left:43.5%;width:14%">
+                        <img src="midia/s2-4.jpg" alt="" decoding="async">
+                        <span class="wb-seg-tc">0:04</span>
+                        <span class="wb-handle is-l" data-wb-trim-l></span>
+                        <span class="wb-handle is-r" data-wb-trim-r></span>
+                      </div>
+
+                      <div class="wb-seg is-gap" data-wb-gap="2" style="left:57.5%;width:9%">
+                        <span class="wb-gap-hatch"></span>
+                      </div>
+
+                      <div class="wb-seg is-clip" data-wb-clip="3" style="left:66.5%;width:12%">
+                        <img src="midia/s3-2.jpg" alt="" decoding="async">
+                        <span class="wb-seg-tc">0:03</span>
+                        <span class="wb-handle is-l"></span>
+                        <span class="wb-handle is-r"></span>
+                      </div>
+
+                      <div class="wb-seg is-gap" data-wb-gap="3" style="left:78.5%;width:8%">
+                        <span class="wb-gap-hatch"></span>
+                      </div>
+
+                      <div class="wb-seg is-clip" data-wb-clip="4" style="left:86.5%;width:13.5%">
+                        <img src="midia/s3-5.jpg" alt="" decoding="async">
+                        <span class="wb-seg-tc">0:04</span>
+                        <span class="wb-handle is-l"></span>
+                        <span class="wb-handle is-r"></span>
+                      </div>
+
+                      <!-- Playhead vermelho protagonista -->
+                      <div class="wb-playhead" data-wb-playhead>
+                        <span class="wb-playhead-cap"></span>
+                        <span class="wb-playhead-line"></span>
+                      </div>
+                    </div>
+
+                    <!-- Faixa sutil de áudio/música abaixo da sequência -->
+                    <div class="wb-audio-lane" data-wb-audio>
+                      <span class="wb-audio-wave"></span>
+                      <span class="wb-audio-tag">AUDIO / MUSIC LAYER</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CENA D: DA ILUSTRAÇÃO PARA A DEMONSTRAÇÃO (MOVIDA PARA DEPOIS DE #como-funciona) -->
+    <!-- Só aparece com VIDEO_DEMONSTRACAO_URL. Não usa vídeo ilustrativo como prova. -->
+    <section class="sec" id="demonstracao" data-role="demo-section" data-motion-scene="demo" hidden>
+      <div class="wrap-narrow">
+        <div class="sec-head demo-sec-head">
+          <div class="sec-kicker" data-i18n="demo_kicker">Resultado de corte</div>
+          <h2 data-i18n="demo_title">Corte real montado em sequência</h2>
+          <p data-i18n="demo_sub">Gravação vertical de barbearia reunindo as etapas do corte até a finalização.</p>
+        </div>
+
+        <div class="demo-stage-shell" data-demo-shell>
+          <div class="demo-stage-topbar" aria-hidden="true" dir="ltr">
+            <span class="dst-red-bar"></span>
+            <span class="dst-label">9:16</span>
+            <span class="dst-tc">1:14</span>
+          </div>
+          <div class="demo-video-frame">
+            <video class="demo-video" data-role="demo-video" data-i18n-aria="demo_title" aria-label="Corte real montado em sequência" poster="midia/demo-poster.jpg" controls playsinline preload="metadata"></video>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CENA E: A MONTAGEM TERMINA; A DECISÃO FICA SIMPLES -->
+    <section class="sec" id="licenca" data-motion-scene="offer">
+      <div class="wrap">
+        <div class="launch-offer" data-offer-box>
+          <span class="offer-red-glow" aria-hidden="true"></span>
+          <span class="offer-red-line" aria-hidden="true" data-offer-line></span>
+          <div class="launch-offer-copy" data-offer-body>
+            <div class="sec-kicker" data-i18n="plan_buy_kicker">Licença permanente</div>
+            <h2 data-i18n="plan_trial_title">Teste gratuito de 7 dias</h2>
+            <p class="offer-price-line" data-i18n="hero_price_line">Pagamento único · US$ 19 · Sem mensalidade</p>
+            <p class="launch-status" data-role="trial-status">Status atual: em preparação para publicação na Google Play.</p>
+          </div>
+          <div class="launch-offer-cta" data-offer-cta>
+            <a class="btn-ghost" href="buy/" data-i18n="btn_view_license">Ver detalhes da licença</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CENA F: DÚVIDAS & SUPORTE EM REPOUSO -->
+    <section class="sec" id="ajuda" data-motion-scene="help">
+      <div class="wrap">
+        <div class="help-grid">
+          <aside class="support-card" data-help-item="0">
+            <h3 data-i18n="support_card_title">Suporte</h3>
+            <p data-i18n="support_card_desc">Dúvidas sobre compatibilidade ou licença? Fale abaixo.</p>
+
+            <div class="support-email-box" data-role="support-email" hidden></div>
+
+            <a class="btn-ghost" data-role="support-whatsapp" href="https://wa.me/5531993811525" target="_blank" rel="noopener">
+              <span data-btn-label>Falar pelo WhatsApp (+55 31 99381-1525)</span>
+            </a>
+          </aside>
+
+          <div class="faq-list">
+            <details class="faq-item" data-help-item="1" open>
+              <summary data-i18n="faq_1_q">O que significa salvar sem compressão?</summary>
+              <p data-i18n="faq_1_a">Quando os trechos têm resolução, orientação e perfil técnico compatíveis e não recebem filtros nem transições, o aplicativo copia diretamente os pacotes originais de vídeo sem comprimir a imagem.</p>
+            </details>
+
+            <details class="faq-item" data-help-item="2">
+              <summary data-i18n="faq_2_q">Adicionar música comprime a imagem?</summary>
+              <p data-i18n="faq_2_a">Não. O áudio da câmera e a música são tratados separadamente na camada de áudio. Sem alterações visuais em trechos compatíveis, a imagem original continua preservada.</p>
+            </details>
+
+            <details class="faq-item" data-help-item="3">
+              <summary data-i18n="faq_3_q">Preciso de internet para editar?</summary>
+              <p data-i18n="faq_3_a">Não. Seleção de trechos, edição e exportação rodam offline no aparelho. O teste gratuito exige internet ao ativar e ao reiniciar o celular; após confirmar a licença permanente, o aplicativo continua funcionando offline sem checagem periódica (a internet só volta a ser usada na ativação ou troca entre os seus 2 aparelhos).</p>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot-red-trace" aria-hidden="true"><span></span></div>
+      <div class="foot-row">
+        <span data-i18n="foot_summary">Fartir Cut — Aplicativo móvel</span>
+        <div class="foot-links">
+          <a href="privacidade/" data-i18n="foot_privacy">Política de Privacidade</a>
+          <a href="termos/" data-i18n="foot_terms">Termos de Uso</a>
+          <a href="../" data-i18n="foot_main_site">Site Fartir</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="cut-config.js"></script>
+  <script src="cut-i18n.js"></script>
+  <script src="cut-motion.js"></script>
+</body>
+</html>

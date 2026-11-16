@@ -12,6 +12,13 @@
 
     if (firstSegment.indexOf('convite') === 0) {
       window.location.replace('/pass/?c=' + encodeURIComponent(firstSegment) + hash);
+    } else if (firstSegment === 'cut') {
+      var secondSegment = parts[1] || '';
+      if (secondSegment === 'buy' || secondSegment === 'privacidade' || secondSegment === 'termos') {
+        window.location.replace('/cut/' + secondSegment + '/' + hash);
+      } else {
+        window.location.replace('/cut/' + hash);
+      }
     } else if (firstSegment === 'admin') {
       window.location.replace('/admin/' + hash);
     } else if (firstSegment === 'orcamento') {
